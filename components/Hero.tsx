@@ -103,10 +103,31 @@ export default function Hero() {
         ctx.stroke()
       })
 
-      const grad = ctx.createConicalGradient
-        ? (ctx as unknown as { createConicalGradient: (x: number, y: number, a: number) => CanvasGradient }).createConicalGradient(cx, cy, angle)
-        : null
+      let grad: CanvasGradient | null = null;
 
+      if (typeof ctx.createConicGradient === 'function') {
+        grad = ctx.createConicGradient(angle, cx, cy);
+        grad.addColorStop(0, 'rgba(0,255,240,0.4)');
+        grad.addColorStop(0.2, 'rgba(0,255,240,0.15)');
+        grad.addColorStop(1, 'rgba(0,255,240,0)');
+      }
+      
+      if (grad) {
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, r, angle - 0.5, angle);
+        ctx.closePath();
+        ctx.fill();
+      } else {
+        // fallback
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
+        ctx.strokeStyle = 'rgba(0,255,240,0.5)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
       if (!grad) {
         // fallback sweep line
         ctx.beginPath()

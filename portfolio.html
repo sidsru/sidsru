@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Programmer Portfolio — Unreal Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080b10;
+    --surface: #0d1117;
+    --surface2: #141a23;
+    --border: #1e2d3d;
+    --accent: #00e5ff;
+    --accent2: #ff4060;
+    --accent3: #ffe44e;
+    --text: #cdd6e0;
+    --text-dim: #526070;
+    --text-bright: #f0f6ff;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Syne', sans-serif;
+    --glow: 0 0 24px rgba(0,229,255,0.18);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(8,11,16,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--text-bright);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ─── TAG CHIP ─── */
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .tag.accent { border-color: var(--accent); color: var(--accent); }
+  .tag.red { border-color: var(--accent2); color: var(--accent2); }
+  .tag.yellow { border-color: var(--accent3); color: var(--accent3); }
+
+  /* ─── SECTION LABELS ─── */
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  /* ─── HERO ─── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 20%, transparent 100%);
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,229,255,0.08) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
+  }
+
+  .hero-content { position: relative; max-width: 900px; }
+
+  .hero-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: clamp(42px, 7vw, 88px);
+    line-height: 1.0;
+    color: var(--text-bright);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero-title .line2 {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(0,229,255,0.4);
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    color: var(--text-dim);
+    max-width: 560px;
+    line-height: 1.8;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+  }
+
+  .btn-primary {
+    padding: 14px 32px;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 32px rgba(0,229,255,0.4);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    padding: 14px 32px;
+    background: transparent;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-stats {
+    position: absolute;
+    right: 48px;
+    bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    opacity: 0;
+    animation: fadeIn 1s 1.2s forwards;
+  }
+
+  .stat-item { text-align: right; }
+  .stat-num {
+    font-family: var(--sans);
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+  .stat-label { font-size: 11px; color: var(--text-dim); letter-spacing: 0.1em; }
+
+  /* ─── VIDEO PLACEHOLDER ─── */
+  .video-block {
+    width: 100%;
+    max-width: 860px;
+    aspect-ratio: 16/9;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+
+  .video-block::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,229,255,0.05) 0%, transparent 60%);
+  }
+
+  .video-placeholder-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .play-btn {
+    width: 64px; height: 64px;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .play-btn::after {
+    content: '';
+    border-left: 20px solid var(--accent);
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    margin-left: 4px;
+  }
+
+  .play-btn:hover {
+    background: rgba(0,229,255,0.1);
+    box-shadow: var(--glow);
+  }
+
+  .video-label {
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  .video-corner {
+    position: absolute;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  .video-corner.tl { top: 12px; left: 12px; }
+  .video-corner.tr { top: 12px; right: 12px; }
+  .video-corner.bl { bottom: 12px; left: 12px; }
+  .video-corner.br { bottom: 12px; right: 12px; color: var(--accent); }
+
+  /* ─── SECTIONS COMMON ─── */
+  section {
+    padding: 100px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    margin-bottom: 60px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 32px;
+  }
+
+  .section-title {
+    font-family: var(--sans);
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800;
+    color: var(--text-bright);
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .section-sub {
+    color: var(--text-dim);
+    font-size: 13px;
+    max-width: 500px;
+  }
+
+  /* ─── RESULT SECTION ─── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 60px;
+  }
+
+  .feature-cell {
+    background: var(--surface);
+    padding: 28px 24px;
+    transition: background 0.2s;
+    cursor: default;
+  }
+
+  .feature-cell:hover { background: var(--surface2); }
+
+  .feature-icon {
+    font-size: 20px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .feature-title {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 8px;
+  }
+
+  .feature-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* ─── ARCHITECTURE ─── */
+  .arch-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 40px;
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .arch-diagram::before {
+    content: '// SYSTEM ARCHITECTURE';
+    position: absolute;
+    top: 12px; right: 16px;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+  }
+
+  .arch-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+    padding: 20px 0;
+  }
+
+  .arch-node {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 16px 24px;
+    text-align: center;
+    position: relative;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    cursor: default;
+    min-width: 120px;
+  }
+
+  .arch-node:hover {
+    border-color: var(--accent);
+    box-shadow: var(--glow);
+  }
+
+  .arch-node.highlight { border-color: rgba(0,229,255,0.5); }
+
+  .arch-node-title {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-bright);
+    display: block;
+  }
+
+  .arch-node-sub {
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    display: block;
+  }
+
+  .arch-arrow {
+    font-size: 18px;
+    color: var(--accent);
+    padding: 0 8px;
+    opacity: 0.6;
+  }
+
+  .design-points {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .design-point {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 24px;
+  }
+
+  .design-point-q {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .design-point-title {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 10px;
+  }
+
+  .design-point-body {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  /* ─── CODE BLOCK ─── */
+  .code-block {
+    background: #0a0e14;
+    border: 1px solid var(--border);
+    padding: 28px 32px;
+    overflow-x: auto;
+    position: relative;
+    margin: 24px 0;
+  }
+
+  .code-block::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 10px; right: 16px;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .code-block pre {
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--text);
+    white-space: pre;
+  }
+
+  .c-comment { color: #4a6070; }
+  .c-keyword { color: #ff9060; }
+  .c-type { color: #00e5ff; }
+  .c-string { color: #ffe44e; }
+  .c-fn { color: #c0e080; }
+  .c-num { color: #ff88aa; }
+
+  /* ─── DEEP DIVE TABS ─── */
+  .tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+
+  .tab-btn {
+    padding: 14px 28px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: -1px;
+  }
+
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .deep-dive-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  .deep-text h3 {
+    font-family: var(--sans);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 16px;
+  }
+
+  .deep-text p {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  .deep-text ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .deep-text ul li {
+    font-size: 12px;
+    color: var(--text-dim);
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .deep-text ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  /* ─── OPTIMIZATION ─── */
+  .opt-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  .opt-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 28px 24px;
+  }
+
+  .opt-card-label {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+
+  .opt-card-title {
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-bright);
+    margin-bottom: 12px;
+  }
+
+  .opt-card-body {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .before-after {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 48px;
+  }
+
+  .ba-panel {
+    background: var(--surface);
+    padding: 32px;
+  }
+
+  .ba-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .ba-label.before { color: var(--accent2); }
+  .ba-label.after { color: var(--accent); }
+
+  .metric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .metric-row:last-child { border-bottom: none; }
+
+  .metric-name {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .metric-val {
+    font-family: var(--sans);
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .metric-val.bad { color: var(--accent2); }
+  .metric-val.good { color: var(--accent); }
+
+  .metric-unit {
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--text-dim);
+    margin-left: 4px;
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  .progress-bar-wrap {
+    margin: 8px 0 4px;
+  }
+
+  .progress-bar-track {
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 1s ease;
+  }
+
+  .progress-bar-fill.bad { background: var(--accent2); }
+  .progress-bar-fill.good { background: var(--accent); }
+
+  /* ─── PROBLEMS ─── */
+  .problem-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .problem-item {
+    background: var(--surface);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .problem-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 28px;
+    cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
+  }
+
+  .problem-header:hover { background: var(--surface2); }
+
+  .problem-num {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 32px;
+  }
+
+  .problem-title {
+    flex: 1;
+    font-size: 13px;
+    color: var(--text-bright);
+    font-weight: 700;
+  }
+
+  .problem-tag { }
+  .problem-chevron {
+    color: var(--text-dim);
+    transition: transform 0.3s;
+    font-size: 16px;
+  }
+
+  .problem-item.open .problem-chevron { transform: rotate(180deg); }
+
+  .problem-body {
+    display: none;
+    padding: 0 28px 28px;
+    border-top: 1px solid var(--border);
+  }
+
+  .problem-item.open .problem-body { display: block; }
+
+  .problem-step {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .problem-step-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    min-width: 80px;
+    padding-top: 2px;
+  }
+
+  .problem-step-body {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    flex: 1;
+  }
+
+  /* ─── KEYWORDS ─── */
+  .keywords-wall {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 48px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+
+  .kw-item {
+    font-family: var(--sans);
+    font-size: clamp(14px, 2.5vw, 22px);
+    font-weight: 700;
+    color: var(--text-dim);
+    transition: color 0.2s;
+    cursor: default;
+    padding: 4px 8px;
+  }
+
+  .kw-item:hover { color: var(--accent); }
+  .kw-item.kw-big { font-size: clamp(22px, 4vw, 40px); color: var(--text); }
+  .kw-item.kw-accent { color: var(--accent); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* ─── SEPARATOR ─── */
+  .full-sep {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 48px;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ─── CURSOR BLINK ─── */
+  .cursor-blink::after {
+    content: '_';
+    color: var(--accent);
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  /* ─── SCAN LINE EFFECT ─── */
+  .scan-line {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scan-line::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(transparent 0%, rgba(0,229,255,0.03) 50%, transparent 100%);
+    animation: scan 4s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes scan {
+    to { top: 200%; }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    .nav-links { display: none; }
+    #hero { padding: 100px 20px 60px; }
+    section { padding: 60px 20px; }
+    .design-points { grid-template-columns: 1fr; }
+    .deep-dive-grid { grid-template-columns: 1fr; }
+    .opt-grid { grid-template-columns: 1fr; }
+    .before-after { grid-template-columns: 1fr; }
+    .hero-stats { display: none; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+
+  /* ─── INLINE HIGHLIGHT ─── */
+  .hl { color: var(--accent); }
+  .hl-y { color: var(--accent3); }
+  .hl-r { color: var(--accent2); }
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="#" class="nav-logo">DEV<span>.</span>PORTFOLIO</a>
+  <ul class="nav-links">
+    <li><a href="#result">Result</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#deepdive">Deep Dive</a></li>
+    <li><a href="#optimization">Optimization</a></li>
+    <li><a href="#problems">Problems</a></li>
+  </ul>
+</nav>
+
+<!-- ─── HERO ─── -->
+<div id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">Client Programmer Portfolio — Unreal Engine</p>
+
+    <h1 class="hero-title">
+      Character<br>
+      <span class="line2">Systems</span>
+    </h1>
+
+    <p class="hero-desc">
+      단순히 만든 결과가 아닌, 어떻게 설계했는지를 증명하는 기술 포트폴리오입니다.<br>
+      구조 설계 · 최적화 · 문제 해결 과정까지 담았습니다.
+    </p>
+
+    <div class="hero-keywords">
+      <span class="tag accent">Motion Matching</span>
+      <span class="tag accent">Animation System</span>
+      <span class="tag accent">GAS</span>
+      <span class="tag">Unreal Engine 5</span>
+      <span class="tag">C++</span>
+      <span class="tag yellow">Optimization</span>
+      <span class="tag">Profiling</span>
+    </div>
+
+    <div class="hero-cta">
+      <a href="#result" class="btn-primary">프로젝트 보기</a>
+      <a href="#deepdive" class="btn-ghost">Deep Dive →</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <span class="stat-num">60→8</span>
+      <span class="stat-label">Draw Call 감소</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">38%</span>
+      <span class="stat-label">Tick Cost 절감</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">3</span>
+      <span class="stat-label">Core System</span>
+    </div>
+  </div>
+</div>
+
+<hr class="full-sep">
+
+<!-- ─── RESULT ─── -->
+<section id="result">
+  <div class="section-header">
+    <p class="section-label">01 — Result</p>
+    <h2 class="section-title">구현 결과물</h2>
+    <p class="section-sub">플레이어 캐릭터의 이동·전투·스킬·피격·상태 시스템을 구현했습니다.</p>
+  </div>
+
+  <!-- Video placeholder -->
+  <div class="video-block scan-line" style="margin-bottom: 56px;">
+    <div class="video-placeholder-inner">
+      <div class="play-btn"></div>
+      <span class="video-label">Gameplay Demo — 00:45</span>
+    </div>
+    <span class="video-corner tl">REC ●</span>
+    <span class="video-corner tr">UE5 / C++</span>
+    <span class="video-corner bl">Character Systems Demo</span>
+    <span class="video-corner br">1080p / 60fps</span>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-cell">
+      <span class="feature-icon">⬡</span>
+      <div class="feature-title">Movement System</div>
+      <div class="feature-desc">커스텀 CharacterMovement 확장. 상태별 이동 속도·가속도 제어, 회전 처리, 경사면 대응.</div>
+    </div>
+    <div class="feature-cell">
+      <span class="feature-icon">⬡</span>
+      <div class="feature-title">Animation System</div>
+      <div class="feature-desc">Motion Matching 기반 포즈 검색. Locomotion / Combat 상태 분리. Blend Weight 동적 제어.</div>
+    </div>
+    <div class="feature-cell">
+      <span class="feature-icon">⬡</span>
+      <div class="feature-title">Ability System (GAS)</div>
+      <div class="feature-desc">Gameplay Ability System. 스킬 쿨타임·비용 구조, Tag 기반 상태 제어, SetByCaller 활용.</div>
+    </div>
+    <div class="feature-cell">
+      <span class="feature-icon">⬡</span>
+      <div class="feature-title">Hit Reaction</div>
+      <div class="feature-desc">방향별 피격 모션 분기, Hit Stop 구현, GameplayCue를 통한 이펙트·사운드 트리거.</div>
+    </div>
+    <div class="feature-cell">
+      <span class="feature-icon">⬡</span>
+      <div class="feature-title">State Management</div>
+      <div class="feature-desc">GameplayTag 계층 기반 상태 관리. Dead / Stunned / Invincible 등 태그 체계 설계.</div>
+    </div>
+    <div class="feature-cell">
+      <span class="feature-icon">⬡</span>
+      <div class="feature-title">Debug UI</div>
+      <div class="feature-desc">실시간 상태 태그·쿨타임 표시 디버그 HUD. 개발 중 시각화로 시스템 검증 효율 향상.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="full-sep">
+
+<!-- ─── ARCHITECTURE ─── -->
+<section id="architecture">
+  <div class="section-header">
+    <p class="section-label">02 — System Architecture</p>
+    <h2 class="section-title">시스템 구조</h2>
+    <p class="section-sub">왜 이 구조를 선택했는지, 설계 의도를 설명합니다.</p>
+  </div>
+
+  <div class="arch-diagram">
+    <div class="arch-flow">
+      <div class="arch-node highlight">
+        <span class="arch-node-title">Input</span>
+        <span class="arch-node-sub">Enhanced Input</span>
+      </div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-node highlight">
+        <span class="arch-node-title">Character</span>
+        <span class="arch-node-sub">ACharacter / C++</span>
+      </div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-node highlight">
+        <span class="arch-node-title">AbilitySystem</span>
+        <span class="arch-node-sub">GAS / ASC</span>
+      </div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-node highlight">
+        <span class="arch-node-title">Animation</span>
+        <span class="arch-node-sub">Motion Matching</span>
+      </div>
+      <span class="arch-arrow">→</span>
+      <div class="arch-node highlight">
+        <span class="arch-node-title">Rendering</span>
+        <span class="arch-node-sub">LOD / Instancing</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="design-points">
+    <div class="design-point">
+      <div class="design-point-q">왜 선택했나?</div>
+      <div class="design-point-title">GAS (Gameplay Ability System)</div>
+      <div class="design-point-body">
+        스킬 추가 시 캐릭터 클래스 직접 수정 없이 확장 가능한 구조가 필요했습니다.
+        GameplayTag 기반 상태 제어로 코드 결합도를 낮추고,
+        쿨타임·비용·이펙트를 하나의 Ability 단위로 캡슐화했습니다.
+      </div>
+    </div>
+    <div class="design-point">
+      <div class="design-point-q">왜 선택했나?</div>
+      <div class="design-point-title">Motion Matching</div>
+      <div class="design-point-body">
+        State Machine 방식의 Blend Tree는 상태 수 증가 시 복잡도가 급격히 높아집니다.
+        Motion Matching은 Pose DB에서 현재 상태에 맞는 포즈를 검색하므로
+        이동 방향·속도·피격 방향 변화에 자연스럽게 대응합니다.
+      </div>
+    </div>
+    <div class="design-point">
+      <div class="design-point-q">왜 선택했나?</div>
+      <div class="design-point-title">Tag 기반 상태 관리</div>
+      <div class="design-point-body">
+        bool 변수로 상태를 관리하면 조건 조합이 폭발적으로 증가합니다.
+        GameplayTag 계층 구조(State.Combat.Stunned 등)로 상태 추가·삭제가
+        명확하고, 태그 쿼리만으로 조건 분기가 가능해집니다.
+      </div>
+    </div>
+    <div class="design-point">
+      <div class="design-point-q">왜 선택했나?</div>
+      <div class="design-point-title">Enhanced Input System</div>
+      <div class="design-point-body">
+        레거시 Input Binding 방식은 컨텍스트 전환(UI, Combat, Cutscene)이 불편합니다.
+        Enhanced Input의 InputMappingContext를 활용해 상태별 입력 레이어를
+        런타임에 추가·제거하는 구조로 설계했습니다.
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="full-sep">
+
+<!-- ─── DEEP DIVE ─── -->
+<section id="deepdive">
+  <div class="section-header">
+    <p class="section-label">03 — Deep Dive</p>
+    <h2 class="section-title">핵심 구현</h2>
+    <p class="section-sub">3가지 핵심 시스템의 구현 방식을 코드와 함께 설명합니다.</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(event,'tab-anim')">Animation System</button>
+    <button class="tab-btn" onclick="switchTab(event,'tab-gas')">Ability System</button>
+    <button class="tab-btn" onclick="switchTab(event,'tab-move')">Movement</button>
+  </div>
+
+  <!-- TAB: Animation -->
+  <div id="tab-anim" class="tab-content active">
+    <div class="deep-dive-grid">
+      <div class="deep-text">
+        <h3>Motion Matching 구조</h3>
+        <p>
+          Pose Database에 캐릭터의 과거 애니메이션 포즈를 등록하고,
+          런타임에 현재 Trajectory(이동 궤적)·Pose Cost를 계산해
+          가장 자연스러운 포즈를 선택합니다.
+        </p>
+        <ul>
+          <li>Pose DB: 발 위치·속도·방향 벡터를 특징값으로 저장</li>
+          <li>Trajectory Goal: 입력 방향과 현재 속도 기반 예측 궤적</li>
+          <li>Cost Function: Pose Cost + Trajectory Cost 가중 합산</li>
+          <li>채널 가중치로 상황별(전투/이동) 우선도 조정</li>
+        </ul>
+      </div>
+      <div>
+        <div class="code-block" data-lang="C++">
+          <pre><span class="c-comment">// PoseSearch 채널 가중치 설정 예시</span>
+<span class="c-keyword">void</span> <span class="c-type">UMyAnimInstance</span>::<span class="c-fn">UpdateMotionMatchingWeights</span>()
+{
+    <span class="c-keyword">bool</span> bInCombat = <span class="c-fn">HasTag</span>(<span class="c-string">Tag_State_Combat</span>);
+
+    <span class="c-comment">// 전투 시 상체 동작에 가중치 증가</span>
+    <span class="c-type">FPoseSearchChannelSettings</span> Settings;
+    Settings.PoseWeight    = bInCombat ? <span class="c-num">0.4f</span> : <span class="c-num">0.6f</span>;
+    Settings.TrajectoryWeight = bInCombat ? <span class="c-num">0.6f</span> : <span class="c-num">0.4f</span>;
+
+    <span class="c-fn">SetMotionMatchingChannelWeights</span>(Settings);
+}</pre>
+        </div>
+        <div class="code-block" data-lang="C++">
+          <pre><span class="c-comment">// Trajectory 목표 생성</span>
+<span class="c-type">FPoseSearchQueryTrajectorySample</span>
+<span class="c-type">UMyAnimInstance</span>::<span class="c-fn">BuildTrajectorySample</span>(
+    <span class="c-keyword">float</span> DeltaTime) <span class="c-keyword">const</span>
+{
+    <span class="c-type">FVector</span> Velocity   = <span class="c-fn">GetOwnerVelocity</span>();
+    <span class="c-type">FVector</span> InputDir   = <span class="c-fn">GetInputVector</span>();
+
+    <span class="c-comment">// 0.5초 뒤 예측 위치</span>
+    <span class="c-type">FVector</span> FuturePos  = Velocity * <span class="c-num">0.5f</span>
+                       + InputDir * <span class="c-num">200.f</span>;
+
+    <span class="c-keyword">return</span> { FuturePos, Velocity };
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: GAS -->
+  <div id="tab-gas" class="tab-content">
+    <div class="deep-dive-grid">
+      <div class="deep-text">
+        <h3>Ability System 설계</h3>
+        <p>
+          GAS의 AbilitySystemComponent를 PlayerState에 배치하고,
+          리스폰 시에도 어빌리티·어트리뷰트가 유지되도록 설계했습니다.
+        </p>
+        <ul>
+          <li>ASC는 PlayerState, Avatar는 Character로 분리</li>
+          <li>SetByCaller로 런타임 데미지 값을 Ability에서 직접 전달</li>
+          <li>GameplayTag로 Cooldown/Cost Effect 명확히 구분</li>
+          <li>GameplayCue 분리로 클라이언트 이펙트 독립 처리</li>
+        </ul>
+      </div>
+      <div>
+        <div class="code-block" data-lang="C++">
+          <pre><span class="c-comment">// SetByCaller를 통한 데미지 전달</span>
+<span class="c-keyword">void</span> <span class="c-type">UGA_MeleeAttack</span>::<span class="c-fn">ApplyDamage</span>(
+    <span class="c-type">AActor</span>* Target)
+{
+    <span class="c-type">FGameplayEffectSpecHandle</span> SpecHandle =
+        <span class="c-fn">MakeOutgoingGameplayEffectSpec</span>(
+            DamageEffectClass, GetAbilityLevel());
+
+    <span class="c-comment">// 런타임에 데미지 값 주입</span>
+    SpecHandle.Data-><span class="c-fn">SetSetByCallerMagnitude</span>(
+        <span class="c-type">TAG_Data_Damage</span>,
+        BaseDamage * ComboMultiplier);
+
+    <span class="c-fn">ApplyGameplayEffectSpecToTarget</span>(
+        SpecHandle,
+        <span class="c-fn">UAbilitySystemGlobals</span>::
+        <span class="c-fn">GetAbilitySystemComponentFromActor</span>(Target));
+}</pre>
+        </div>
+        <div class="code-block" data-lang="C++">
+          <pre><span class="c-comment">// Tag 기반 어빌리티 실행 조건</span>
+<span class="c-keyword">bool</span> <span class="c-type">UGA_MeleeAttack</span>::<span class="c-fn">CanActivateAbility</span>(
+    ...) <span class="c-keyword">const</span>
+{
+    <span class="c-comment">// Stun/Dead 상태면 사용 불가</span>
+    <span class="c-keyword">if</span> (<span class="c-fn">HasMatchingGameplayTag</span>(
+            <span class="c-type">TAG_State_Stunned</span>) ||
+        <span class="c-fn">HasMatchingGameplayTag</span>(
+            <span class="c-type">TAG_State_Dead</span>))
+    {
+        <span class="c-keyword">return false</span>;
+    }
+    <span class="c-keyword">return</span> <span class="c-keyword">Super</span>::<span class="c-fn">CanActivateAbility</span>(...);
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: Movement -->
+  <div id="tab-move" class="tab-content">
+    <div class="deep-dive-grid">
+      <div class="deep-text">
+        <h3>커스텀 Movement 처리</h3>
+        <p>
+          UCharacterMovementComponent를 상속해 상태별 이동 파라미터를
+          동적으로 변경하는 구조로 설계했습니다.
+        </p>
+        <ul>
+          <li>Sprint / Walk / Combat Stance별 MaxWalkSpeed 분리</li>
+          <li>회전 처리: UseControllerDesiredRotation + Yaw 보간</li>
+          <li>회피 도중 입력 버퍼링으로 연속 동작 지원</li>
+          <li>Tick 주기 조절: 일정 거리 이상 캐릭터는 업데이트 빈도 감소</li>
+        </ul>
+      </div>
+      <div>
+        <div class="code-block" data-lang="C++">
+          <pre><span class="c-comment">// 상태 기반 이동 속도 설정</span>
+<span class="c-keyword">void</span> <span class="c-type">UMyCharMovement</span>::<span class="c-fn">UpdateMovementParams</span>()
+{
+    <span class="c-keyword">const bool</span> bSprinting =
+        <span class="c-fn">HasTag</span>(<span class="c-type">TAG_State_Sprinting</span>);
+    <span class="c-keyword">const bool</span> bInCombat  =
+        <span class="c-fn">HasTag</span>(<span class="c-type">TAG_State_Combat</span>);
+
+    <span class="c-keyword">if</span> (bSprinting)
+        MaxWalkSpeed = SprintSpeed;     <span class="c-comment">// 600</span>
+    <span class="c-keyword">else if</span> (bInCombat)
+        MaxWalkSpeed = CombatWalkSpeed; <span class="c-comment">// 300</span>
+    <span class="c-keyword">else</span>
+        MaxWalkSpeed = DefaultSpeed;    <span class="c-comment">// 450</span>
+
+    <span class="c-comment">// 전투 중 회전 즉시 반응</span>
+    bOrientRotationToMovement = !bInCombat;
+    bUseControllerDesiredRotation = bInCombat;
+}</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="full-sep">
+
+<!-- ─── OPTIMIZATION ─── -->
+<section id="optimization">
+  <div class="section-header">
+    <p class="section-label">04 — Optimization</p>
+    <h2 class="section-title">최적화</h2>
+    <p class="section-sub">문제 인식 → 분석 → 해결 → 수치 검증까지의 과정입니다.</p>
+  </div>
+
+  <div class="opt-grid">
+    <div class="opt-card">
+      <div class="opt-card-label">문제 상황</div>
+      <div class="opt-card-title">Draw Call 급증</div>
+      <div class="opt-card-body">
+        캐릭터 수 증가 시 <span class="hl-r">60+</span> Draw Call 발생.
+        <code>stat unit</code>으로 GPU 병목 확인.
+        각 캐릭터의 Equipment가 별도 머티리얼 인스턴스를 사용하여 Batching 불가.
+      </div>
+    </div>
+    <div class="opt-card">
+      <div class="opt-card-label">분석 방법</div>
+      <div class="opt-card-title">Profiling 도구</div>
+      <div class="opt-card-body">
+        <span class="hl">stat unit</span> / <span class="hl">stat gpu</span>로 프레임 분해.<br>
+        <span class="hl">dumpticks</span>로 Tick 비용 오브젝트별 확인.<br>
+        <span class="hl">Unreal Insights</span>로 스레드별 타임라인 분석.
+      </div>
+    </div>
+    <div class="opt-card">
+      <div class="opt-card-label">해결 방법</div>
+      <div class="opt-card-title">멀티 솔루션</div>
+      <div class="opt-card-body">
+        LOD 레벨 설정, 거리 기반 Tick Rate 감소.
+        <span class="hl">Animation Budget Allocator</span> 적용.
+        머티리얼 파라미터 통합으로 GPU Instancing 활성화.
+      </div>
+    </div>
+  </div>
+
+  <div class="before-after">
+    <div class="ba-panel">
+      <div class="ba-label before">⬥ Before</div>
+      <div class="metric-row">
+        <span class="metric-name">Draw Calls (10 actors)</span>
+        <span class="metric-val bad">62<span class="metric-unit">calls</span></span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill bad" style="width:100%"></div>
+        </div>
+      </div>
+      <div class="metric-row">
+        <span class="metric-name">Tick Cost (GameThread)</span>
+        <span class="metric-val bad">18.4<span class="metric-unit">ms</span></span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill bad" style="width:88%"></div>
+        </div>
+      </div>
+      <div class="metric-row">
+        <span class="metric-name">Animation Update (50m+)</span>
+        <span class="metric-val bad">Full<span class="metric-unit">rate</span></span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill bad" style="width:100%"></div>
+        </div>
+      </div>
+      <div class="metric-row">
+        <span class="metric-name">Frame Time</span>
+        <span class="metric-val bad">28.1<span class="metric-unit">ms</span></span>
+      </div>
+    </div>
+
+    <div class="ba-panel">
+      <div class="ba-label after">⬥ After</div>
+      <div class="metric-row">
+        <span class="metric-name">Draw Calls (10 actors)</span>
+        <span class="metric-val good">8<span class="metric-unit">calls</span></span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill good" style="width:13%"></div>
+        </div>
+      </div>
+      <div class="metric-row">
+        <span class="metric-name">Tick Cost (GameThread)</span>
+        <span class="metric-val good">11.4<span class="metric-unit">ms</span></span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill good" style="width:55%"></div>
+        </div>
+      </div>
+      <div class="metric-row">
+        <span class="metric-name">Animation Update (50m+)</span>
+        <span class="metric-val good">Budget<span class="metric-unit">limited</span></span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill good" style="width:28%"></div>
+        </div>
+      </div>
+      <div class="metric-row">
+        <span class="metric-name">Frame Time</span>
+        <span class="metric-val good">14.6<span class="metric-unit">ms</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="full-sep">
+
+<!-- ─── PROBLEMS ─── -->
+<section id="problems">
+  <div class="section-header">
+    <p class="section-label">05 — Problem Solving</p>
+    <h2 class="section-title">문제 해결 경험</h2>
+    <p class="section-sub">실제 겪은 버그와 분석·해결 과정. 이게 진짜 실무 능력입니다.</p>
+  </div>
+
+  <div class="problem-list">
+    <div class="problem-item" onclick="toggleProblem(this)">
+      <div class="problem-header">
+        <span class="problem-num">01</span>
+        <span class="problem-title">스킬 쿨타임이 적용되지 않는 문제</span>
+        <span class="tag red">GAS</span>
+        <span class="problem-chevron">▾</span>
+      </div>
+      <div class="problem-body">
+        <div class="problem-step">
+          <span class="problem-step-label">현상</span>
+          <div class="problem-step-body">
+            스킬 사용 후 쿨타임 없이 즉시 재사용 가능. HUD의 쿨타임 UI는 정상 작동.
+          </div>
+        </div>
+        <div class="problem-step">
+          <span class="problem-step-label">원인 분석</span>
+          <div class="problem-step-body">
+            ASC를 Character에 배치했을 때, 리스폰 시 캐릭터가 Destroy → Spawn되면서
+            ASC도 함께 초기화됨. 쿨타임 GameplayEffect가 유지되지 않았던 것.
+            <span class="hl">AbilitySystemComponent::GetActivatableAbilities()</span>로
+            런타임 상태 확인 후 원인 특정.
+          </div>
+        </div>
+        <div class="problem-step">
+          <span class="problem-step-label">해결</span>
+          <div class="problem-step-body">
+            ASC를 PlayerState로 이동. Character는 Avatar Actor만 담당하도록 분리.
+            <code>InitAbilityActorInfo(PlayerState, Character)</code>로 재연결.
+            리스폰 후에도 ASC·어트리뷰트 유지 확인.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-item" onclick="toggleProblem(this)">
+      <div class="problem-header">
+        <span class="problem-num">02</span>
+        <span class="problem-title">Tick 비용이 특정 조건에서 급증하는 문제</span>
+        <span class="tag yellow">Performance</span>
+        <span class="problem-chevron">▾</span>
+      </div>
+      <div class="problem-body">
+        <div class="problem-step">
+          <span class="problem-step-label">현상</span>
+          <div class="problem-step-body">
+            일반 상태에서는 정상이나, 전투 진입 시 GameThread Tick이 2배 이상 상승.
+          </div>
+        </div>
+        <div class="problem-step">
+          <span class="problem-step-label">원인 분석</span>
+          <div class="problem-step-body">
+            <code>dumpticks</code> 실행 결과, AttackTraceComponent가 매 Tick 
+            SphereTrace를 실행하고 있음 발견. 전투 진입 시 무조건 Trace 활성화되는
+            로직 오류. Ability 활성 중에만 Trace가 동작해야 함.
+          </div>
+        </div>
+        <div class="problem-step">
+          <span class="problem-step-label">해결</span>
+          <div class="problem-step-body">
+            Ability의 <code>ActivateAbility</code>에서 Trace 시작,
+            <code>EndAbility</code>에서 Trace 중단하도록 수정.
+            Tick 자체를 Disable하고 필요 시 수동 호출 방식으로 전환.
+            GameThread Tick 18.4ms → 11.4ms 감소 (38% 절감).
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-item" onclick="toggleProblem(this)">
+      <div class="problem-header">
+        <span class="problem-num">03</span>
+        <span class="problem-title">PlayerStart 위치 문제 — 캐릭터가 맵 밖에 스폰</span>
+        <span class="tag">Gameplay</span>
+        <span class="problem-chevron">▾</span>
+      </div>
+      <div class="problem-body">
+        <div class="problem-step">
+          <span class="problem-step-label">현상</span>
+          <div class="problem-step-body">
+            특정 맵 로드 후 캐릭터가 월드 원점(0,0,0) 또는 맵 밖에 스폰.
+          </div>
+        </div>
+        <div class="problem-step">
+          <span class="problem-step-label">원인 분석</span>
+          <div class="problem-step-body">
+            GameMode의 FindPlayerStart가 특정 조건에서 null 반환.
+            PlayerStart 태그 필터링 로직에서 태그 미설정 시 폴백 처리 누락.
+          </div>
+        </div>
+        <div class="problem-step">
+          <span class="problem-step-label">해결</span>
+          <div class="problem-step-body">
+            <code>ChoosePlayerStart_Implementation</code> 오버라이드.
+            유효한 PlayerStart가 없을 경우 월드 Origin 대신 지정된 Safety Spawn으로 폴백.
+            태그 검색 실패 시 로그 출력으로 미스 조기 탐지.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="full-sep">
+
+<!-- ─── KEYWORDS ─── -->
+<section id="keywords" style="padding-top: 80px; padding-bottom: 80px;">
+  <p class="section-label">Tech Keywords</p>
+  <div class="keywords-wall">
+    <span class="kw-item kw-big kw-accent">Unreal Engine 5</span>
+    <span class="kw-item">Blueprint</span>
+    <span class="kw-item kw-big">C++</span>
+    <span class="kw-item kw-accent">Gameplay Ability System</span>
+    <span class="kw-item">GameplayTag</span>
+    <span class="kw-item kw-big">Motion Matching</span>
+    <span class="kw-item">Animation Blueprint</span>
+    <span class="kw-item">PoseSearch</span>
+    <span class="kw-item kw-accent">Optimization</span>
+    <span class="kw-item kw-big">Profiling</span>
+    <span class="kw-item">Unreal Insights</span>
+    <span class="kw-item">stat unit</span>
+    <span class="kw-item">LOD</span>
+    <span class="kw-item kw-accent">Animation Budget</span>
+    <span class="kw-item">CharacterMovement</span>
+    <span class="kw-item">Enhanced Input</span>
+    <span class="kw-item kw-big">GameplayCue</span>
+    <span class="kw-item">SetByCaller</span>
+    <span class="kw-item">PlayerState</span>
+    <span class="kw-item kw-accent">Client Programmer</span>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <span>© 2025 — Client Programmer Portfolio</span>
+  <span>Built with <span style="color:var(--accent)">Unreal Engine 5</span> · C++ · GAS</span>
+  <span><a href="#">Contact</a> · <a href="#">GitHub</a></span>
+</footer>
+
+<script>
+  // ─── TABS ───
+  function switchTab(e, id) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    e.target.classList.add('active');
+    document.getElementById(id).classList.add('active');
+  }
+
+  // ─── ACCORDION ───
+  function toggleProblem(el) {
+    const wasOpen = el.classList.contains('open');
+    document.querySelectorAll('.problem-item.open').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) el.classList.add('open');
+  }
+
+  // ─── SCROLL REVEAL ───
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.feature-cell, .design-point, .opt-card, .problem-item, .arch-node').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+
+  // ─── NAV ACTIVE LINK ───
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current
+        ? 'var(--accent)' : '';
+    });
+  });
+</script>
+</body>
+</html>

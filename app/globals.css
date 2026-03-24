@@ -1,0 +1,249 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 7, 7, 20;
+    --background-end-rgb: 15, 15, 35;
+  }
+
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply text-white;
+    background: radial-gradient(ellipse at top, #1a1a2e 0%, #0f0f23 50%, #070714 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+}
+
+/* 커스텀 스크롤바 */
+@layer utilities {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-darker;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #6366f1, #8b5cf6);
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #8b5cf6, #a855f7);
+  }
+}
+
+/* 코드 블록 스타일 */
+@layer components {
+  .code-block {
+    @apply relative overflow-hidden;
+    background: linear-gradient(135deg, rgba(30, 30, 63, 0.8) 0%, rgba(45, 31, 78, 0.8) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 16px;
+    padding: 1.5rem;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .code-block::before {
+    content: '';
+    @apply absolute inset-0 opacity-20;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(99, 102, 241, 0.05) 2px,
+      rgba(99, 102, 241, 0.05) 4px
+    );
+  }
+
+  .code-block pre {
+    @apply relative z-10;
+    overflow-x: auto;
+  }
+
+  .code-block code {
+    @apply text-gray-100;
+  }
+
+  /* 그라데이션 텍스트 */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #22d3ee 100%);
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease infinite;
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* 글로우 효과 */
+  .glow-border {
+    @apply relative;
+  }
+
+  .glow-border::before {
+    content: '';
+    @apply absolute -inset-1 rounded-xl opacity-50 blur-xl;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6, #22d3ee);
+    z-index: -1;
+    transition: opacity 0.3s ease;
+  }
+
+  .glow-border:hover::before {
+    @apply opacity-100;
+  }
+
+  /* 비디오 플레이스홀더 */
+  .video-placeholder {
+    @apply relative rounded-2xl overflow-hidden;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 2px dashed rgba(99, 102, 241, 0.4);
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .video-placeholder::before {
+    content: '';
+    @apply absolute inset-0;
+    background: 
+      radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+    animation: video-glow 8s ease-in-out infinite;
+  }
+
+  @keyframes video-glow {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+
+  /* 스탯 카드 */
+  .stat-card {
+    @apply relative p-6 rounded-2xl transition-all duration-300;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    backdrop-filter: blur(10px);
+  }
+
+  .stat-card::before {
+    content: '';
+    @apply absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+  }
+
+  .stat-card:hover {
+    @apply -translate-y-2;
+    border-color: rgba(99, 102, 241, 0.5);
+    box-shadow: 0 20px 60px rgba(99, 102, 241, 0.3);
+  }
+
+  .stat-card:hover::before {
+    @apply opacity-100;
+  }
+
+  /* 다이어그램 박스 */
+  .diagram-box {
+    @apply p-4 rounded-xl text-center transition-all duration-300;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+  }
+
+  .diagram-box:hover {
+    @apply -translate-y-1;
+    background: rgba(99, 102, 241, 0.2);
+    border-color: rgba(99, 102, 241, 0.6);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+  }
+
+  .diagram-arrow {
+    @apply text-accent text-2xl;
+    filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.5));
+  }
+
+  /* 타임라인 */
+  .timeline-item {
+    @apply relative pl-8 pb-6;
+    border-left: 2px solid rgba(99, 102, 241, 0.3);
+  }
+
+  .timeline-item::before {
+    content: '';
+    @apply absolute left-[-6px] top-0 w-3 h-3 rounded-full;
+    background: #6366f1;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.8);
+  }
+
+  .timeline-item:last-child {
+    @apply pb-0;
+  }
+
+  /* 프로그레스 바 */
+  .progress-bar {
+    @apply h-2 rounded-full overflow-hidden;
+    background: rgba(99, 102, 241, 0.2);
+  }
+
+  .progress-fill {
+    @apply h-full rounded-full;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #22d3ee);
+    background-size: 200% 100%;
+    animation: progress-animation 2s ease-in-out;
+  }
+
+  @keyframes progress-animation {
+    0% { background-position: 100% 0; }
+    100% { background-position: 0 0; }
+  }
+
+  /* 섹션 구분선 */
+  .section-divider {
+    @apply h-px my-16;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(99, 102, 241, 0.5) 50%,
+      transparent
+    );
+  }
+}
+
+/* 애니메이션 */
+@layer utilities {
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}

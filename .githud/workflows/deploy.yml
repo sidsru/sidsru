@@ -56,5 +56,5 @@ jobs:
 
 ### STEP 4 — GitHub 레포 설정
 ```
-GitHub 레포 → Settings → Pages
-→ Source: "GitHub Actions" 선택
+//GitHub 레포 → Settings → Pages
+//→ Source: "GitHub Actions" 선택

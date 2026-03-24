@@ -1,31 +1,20 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import type { Metadata } from 'next'
+import './globals.css'
 
 export const metadata: Metadata = {
-  title: "게임 클라이언트 개발자 포트폴리오 | Unreal Engine Specialist",
-  description:
-    "언리얼 엔진 기반 게임 클라이언트 개발자 포트폴리오. Motion Matching, GAS, Optimization 전문.",
-  keywords: [
-    "Unreal Engine",
-    "게임 개발자",
-    "클라이언트 개발자",
-    "C++",
-    "GAS",
-    "Motion Matching",
-  ],
-};
+  title: 'Dev Portfolio | Unreal Engine Client Programmer',
+  description: 'Unreal Engine C++ Client Programmer Portfolio — GAS, Motion Matching, Character System, Optimization',
+  keywords: ['Unreal Engine', 'C++', 'GAS', 'Gameplay Ability System', 'Motion Matching', 'Game Developer', 'Client Programmer'],
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="ko">
-      <body className={inter.className}>{children}</body>
+      <body className="antialiased">{children}</body>
     </html>
-  );
+  )
 }

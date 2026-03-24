@@ -958,10 +958,9 @@
     </p>
 
     <div class="hero-keywords">
-      <span class="tag accent">Motion Matching</span>
-      <span class="tag accent">Animation System</span>
+      <span class="tag accent">Combo System</span>
       <span class="tag accent">GAS</span>
-      <span class="tag">Unreal Engine 5</span>
+      <span class="tag">Unreal Engine 5.7</span>
       <span class="tag">C++</span>
       <span class="tag yellow">Optimization</span>
       <span class="tag">Profiling</span>
@@ -974,10 +973,6 @@
   </div>
 
   <div class="hero-stats">
-    <div class="stat-item">
-      <span class="stat-num">60→8</span>
-      <span class="stat-label">Draw Call 감소</span>
-    </div>
     <div class="stat-item">
       <span class="stat-num">38%</span>
       <span class="stat-label">Tick Cost 절감</span>
@@ -1012,16 +1007,6 @@
   </div>
 
   <div class="features-grid">
-    <div class="feature-cell">
-      <span class="feature-icon">⬡</span>
-      <div class="feature-title">Movement System</div>
-      <div class="feature-desc">커스텀 CharacterMovement 확장. 상태별 이동 속도·가속도 제어, 회전 처리, 경사면 대응.</div>
-    </div>
-    <div class="feature-cell">
-      <span class="feature-icon">⬡</span>
-      <div class="feature-title">Animation System</div>
-      <div class="feature-desc">Motion Matching 기반 포즈 검색. Locomotion / Combat 상태 분리. Blend Weight 동적 제어.</div>
-    </div>
     <div class="feature-cell">
       <span class="feature-icon">⬡</span>
       <div class="feature-title">Ability System (GAS)</div>
@@ -1073,11 +1058,6 @@
       </div>
       <span class="arch-arrow">→</span>
       <div class="arch-node highlight">
-        <span class="arch-node-title">Animation</span>
-        <span class="arch-node-sub">Motion Matching</span>
-      </div>
-      <span class="arch-arrow">→</span>
-      <div class="arch-node highlight">
         <span class="arch-node-title">Rendering</span>
         <span class="arch-node-sub">LOD / Instancing</span>
       </div>
@@ -1096,11 +1076,11 @@
     </div>
     <div class="design-point">
       <div class="design-point-q">왜 선택했나?</div>
-      <div class="design-point-title">Motion Matching</div>
+      <div class="design-point-title">DataAsset기반 무기 시스템</div>
       <div class="design-point-body">
-        State Machine 방식의 Blend Tree는 상태 수 증가 시 복잡도가 급격히 높아집니다.
-        Motion Matching은 Pose DB에서 현재 상태에 맞는 포즈를 검색하므로
-        이동 방향·속도·피격 방향 변화에 자연스럽게 대응합니다.
+        기존의 무기 시스템은 새로운 무기 클래스를 추가하기 위해 기존 코드를 수정해야 했습니다.
+        이는 코드 재사용성을 떨어뜨리고 유지보수를 어렵게 만듭니다.
+        새로운 무기 클래스를 추가시 기존 코드를 수정할 필요가 없도록 DataAsset을 사용하여 구현했습니다.
       </div>
     </div>
     <div class="design-point">
@@ -1135,7 +1115,7 @@
   </div>
 
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab(event,'tab-anim')">Animation System</button>
+    <button class="tab-btn active" onclick="switchTab(event,'tab-anim')">Weapon System</button>
     <button class="tab-btn" onclick="switchTab(event,'tab-gas')">Ability System</button>
     <button class="tab-btn" onclick="switchTab(event,'tab-move')">Movement</button>
   </div>
@@ -1144,17 +1124,19 @@
   <div id="tab-anim" class="tab-content active">
     <div class="deep-dive-grid">
       <div class="deep-text">
-        <h3>Motion Matching 구조</h3>
+        <h3>Weapon System 구조</h3>
         <p>
-          Pose Database에 캐릭터의 과거 애니메이션 포즈를 등록하고,
-          런타임에 현재 Trajectory(이동 궤적)·Pose Cost를 계산해
-          가장 자연스러운 포즈를 선택합니다.
+          DataAsset에 캐릭터의 무기를 등록하고,
+          런타임에 현재 무기의 정보를 가져와
+          캐릭터에 무기를 부여하는 구조로 설계했습니다.
         </p>
         <ul>
-          <li>Pose DB: 발 위치·속도·방향 벡터를 특징값으로 저장</li>
-          <li>Trajectory Goal: 입력 방향과 현재 속도 기반 예측 궤적</li>
-          <li>Cost Function: Pose Cost + Trajectory Cost 가중 합산</li>
-          <li>채널 가중치로 상황별(전투/이동) 우선도 조정</li>
+          <li>UK_WeaponData: 각 무기를 카테고리별로 등록하여 관리</li>
+          <li>UK_StatusAnimData: 선별된 카테고리의 무기의 정보를 등록하여 관리</li>
+          <li>UK_AnimData: 각 무기별 다른 콤보 공격을 정의하여 관리</li>
+          <li>캐릭터는 UK_WeaponData를 소유 런타임중 장착하고자 하는 무기의 태그를 기반으로 UK_StatusAnimData를 참조
+            이후 입력이 되는 공격을 구분하여 UK_AnimData를 참조하여 공격을 실행합니다.
+          </li>
         </ul>
       </div>
       <div>
@@ -1205,7 +1187,6 @@
           <li>ASC는 PlayerState, Avatar는 Character로 분리</li>
           <li>SetByCaller로 런타임 데미지 값을 Ability에서 직접 전달</li>
           <li>GameplayTag로 Cooldown/Cost Effect 명확히 구분</li>
-          <li>GameplayCue 분리로 클라이언트 이펙트 독립 처리</li>
         </ul>
       </div>
       <div>

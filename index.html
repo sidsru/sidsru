@@ -5,15 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Client Programmer Portfolio — Unreal Engine</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-
 </head>
 <body>
 
-<!-- ─── NAV ─── -->
 <nav>
-  <a href="#" class="nav-logo">DEV<span>.</span>PORTFOLIO</a>
+  <a href="#" class="nav-logo">portfolio<em>.cpp</em></a>
   <ul class="nav-links">
     <li><a href="#result">Result</a></li>
     <li><a href="#architecture">Architecture</a></li>
@@ -23,535 +21,414 @@
   </ul>
 </nav>
 
-<!-- ─── HERO ─── -->
-<div id="hero">
-  <div class="hero-grid-bg"></div>
-  <div class="hero-glow"></div>
-
-  <div class="hero-content">
-    <p class="hero-eyebrow">Client Programmer Portfolio — Unreal Engine</p>
-
-    <h1 class="hero-title">
-      Character<br>
-      <span class="line2">Systems</span>
-    </h1>
-
-    <p class="hero-desc">
-      단순히 만든 결과가 아닌, 어떻게 설계했는지를 증명하는 기술 포트폴리오입니다.<br>
-      구조 설계 · 최적화 · 문제 해결 과정까지 담았습니다.
-    </p>
-
-    <div class="hero-keywords">
-      <span class="tag accent">Combo System</span>
-      <span class="tag accent">GAS</span>
-      <span class="tag">Unreal Engine 5.7</span>
-      <span class="tag">C++</span>
-      <span class="tag yellow">Optimization</span>
-      <span class="tag">Profiling</span>
-    </div>
-
-    <div class="hero-cta">
-      <a href="#result" class="btn-primary">프로젝트 보기</a>
-      <a href="#deepdive" class="btn-ghost">Deep Dive →</a>
+<!-- HERO -->
+<section id="hero">
+  <div class="page">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Client Programmer · Unreal Engine 5
+      </div>
+      <h1 class="hero-title">
+        캐릭터로 증명하는<br><span>시스템 설계</span>
+      </h1>
+      <p class="hero-desc">
+        단순한 결과물이 아닌, <br>
+        어떻게 설계했는지를 보여주는 포트폴리오입니다.<br>
+        구조 설계 · 최적화 · 실제 문제 해결 과정을 담았습니다.
+      </p>
+      <div class="hero-tags">
+        <span class="tag tag-blue">Weapon System</span>
+        <span class="tag tag-blue">Gameplay Ability System</span>
+        <span class="tag tag-gray">Unreal Engine 5</span>
+        <span class="tag tag-gray">C++</span>
+        <span class="tag tag-yellow">Optimization</span>
+      </div>
+      <div class="hero-cta">
+        <a href="#result" class="btn btn-primary">프로젝트 보기</a>
+        <a href="#deepdive" class="btn btn-outline">Deep Dive →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">62 → 8</span>
+          <div class="stat-label">Draw Call 감소</div>
+        </div>
+        <div class="stat">
+          <span class="stat-num">38%</span>
+          <div class="stat-label">Tick Cost 절감</div>
+        </div>
+        <div class="stat">
+          <span class="stat-num">28 → 14ms</span>
+          <div class="stat-label">Frame Time 개선</div>
+        </div>
+      </div>
     </div>
   </div>
+</section>
 
-  <div class="hero-stats">
-    <div class="stat-item">
-      <span class="stat-num">38%</span>
-      <span class="stat-label">Tick Cost 절감</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num">3</span>
-      <span class="stat-label">Core System</span>
-    </div>
-  </div>
-</div>
+<hr class="divider">
 
-<hr class="full-sep">
-
-<!-- ─── RESULT ─── -->
+<!-- RESULT -->
 <section id="result">
-  <div class="section-header">
-    <p class="section-label">01 — Result</p>
+  <div class="page">
+    <div class="section-eyebrow">01 — Result</div>
     <h2 class="section-title">구현 결과물</h2>
-    <p class="section-sub">플레이어 캐릭터의 이동·전투·스킬·피격·상태 시스템을 구현했습니다.</p>
-  </div>
+    <p class="section-desc">이동·전투·스킬·피격·상태 시스템을 구현했습니다.</p>
 
-  <!-- Video placeholder -->
-  <div class="video-block scan-line" style="margin-bottom: 56px;">
-    <div class="video-placeholder-inner">
+    <div class="video-wrap">
+      <span class="video-wrap-meta">UE5 / C++ · 00:45</span>
       <div class="play-btn"></div>
-      <span class="video-label">Gameplay Demo — 00:45</span>
+      <span class="video-label">Gameplay Demo</span>
     </div>
-    <span class="video-corner tl">REC ●</span>
-    <span class="video-corner tr">UE5 / C++</span>
-    <span class="video-corner bl">Character Systems Demo</span>
-    <span class="video-corner br">1080p / 60fps</span>
-  </div>
 
-  <div class="features-grid">
-    <div class="feature-cell">
-      <span class="feature-icon">⬡</span>
-      <div class="feature-title">Ability System (GAS)</div>
-      <div class="feature-desc">Gameplay Ability System. 스킬 쿨타임·비용 구조, Tag 기반 상태 제어, SetByCaller 활용.</div>
-    </div>
-    <div class="feature-cell">
-      <span class="feature-icon">⬡</span>
-      <div class="feature-title">Hit Reaction</div>
-      <div class="feature-desc">방향별 피격 모션 분기, Hit Stop 구현, GameplayCue를 통한 이펙트·사운드 트리거.</div>
-    </div>
-    <div class="feature-cell">
-      <span class="feature-icon">⬡</span>
-      <div class="feature-title">State Management</div>
-      <div class="feature-desc">GameplayTag 계층 기반 상태 관리. Dead / Stunned / Invincible 등 태그 체계 설계.</div>
-    </div>
-    <div class="feature-cell">
-      <span class="feature-icon">⬡</span>
-      <div class="feature-title">Debug UI</div>
-      <div class="feature-desc">실시간 상태 태그·쿨타임 표시 디버그 HUD. 개발 중 시각화로 시스템 검증 효율 향상.</div>
+    <div class="feature-grid">
+      <div class="feature-cell">
+        <div class="feature-cell-title">Weapon System</div>
+        <div class="feature-cell-desc">DataAsset 기반 TMap검색. 캐릭터의 입력, 행동상태에 따른 동적 제어.</div>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-cell-title">Ability System (GAS)</div>
+        <div class="feature-cell-desc">스킬 쿨타임·비용 구조, Tag 기반 상태 제어, SetByCaller 활용.</div>
+      </div>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-cell-title">State Management</div>
+        <div class="feature-cell-desc">GameplayTag 계층 기반 상태 관리. Dead / Giled / Swimming 태그 체계 설계.</div>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-cell-title">Debug UI</div>
+        <div class="feature-cell-desc">실시간 상태 태그·쿨타임 표시 디버그 HUD. 시스템 검증 및 개발 효율 향상.</div>
+      </div>
     </div>
   </div>
 </section>
 
-<hr class="full-sep">
+<hr class="divider">
 
-<!-- ─── ARCHITECTURE ─── -->
+<!-- ARCHITECTURE -->
 <section id="architecture">
-  <div class="section-header">
-    <p class="section-label">02 — System Architecture</p>
+  <div class="page">
+    <div class="section-eyebrow">02 — System Architecture</div>
     <h2 class="section-title">시스템 구조</h2>
-    <p class="section-sub">왜 이 구조를 선택했는지, 설계 의도를 설명합니다.</p>
-  </div>
+    <p class="section-desc">왜 이 구조를 선택했는지, 설계 의도를 설명합니다.</p>
 
-  <div class="arch-diagram">
-    <div class="arch-flow">
-      <div class="arch-node highlight">
-        <span class="arch-node-title">Input</span>
-        <span class="arch-node-sub">Enhanced Input</span>
-      </div>
-      <span class="arch-arrow">→</span>
-      <div class="arch-node highlight">
-        <span class="arch-node-title">Character</span>
-        <span class="arch-node-sub">ACharacter / C++</span>
-      </div>
-      <span class="arch-arrow">→</span>
-      <div class="arch-node highlight">
-        <span class="arch-node-title">AbilitySystem</span>
-        <span class="arch-node-sub">GAS / ASC</span>
-      </div>
-      <span class="arch-arrow">→</span>
-      <div class="arch-node highlight">
-        <span class="arch-node-title">Rendering</span>
-        <span class="arch-node-sub">LOD / Instancing</span>
-      </div>
-    </div>
-  </div>
+    <div class="arch-box">
+      <div class="arch-flow">
+        <div class="arch-node">
+          <div class="arch-node-name">Input</div>
+          <div class="arch-node-sub">Enhanced Input</div>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-node">
+          <div class="arch-node-name">Character</div>
+          <div class="arch-node-sub">ACharacter / C++</div>
+        </div>       
+         <span class="arch-arrow">→</span>
+        <div class="arch-node">
+          <div class="arch-node-name">WeaponSystem</div>
+          <div class="arch-node-sub">DataAsset / TMap</div>
+        </div>
+        <span class="arch-arrow">→</span>
+        <div class="arch-node">
+          <div class="arch-node-name">AbilitySystem</div>
+          <div class="arch-node-sub">GAS / ASC</div>
+        </div>
 
-  <div class="design-points">
-    <div class="design-point">
-      <div class="design-point-q">왜 선택했나?</div>
-      <div class="design-point-title">GAS (Gameplay Ability System)</div>
-      <div class="design-point-body">
-        스킬 추가 시 캐릭터 클래스 직접 수정 없이 확장 가능한 구조가 필요했습니다.
-        GameplayTag 기반 상태 제어로 코드 결합도를 낮추고,
-        쿨타임·비용·이펙트를 하나의 Ability 단위로 캡슐화했습니다.
       </div>
     </div>
-    <div class="design-point">
-      <div class="design-point-q">왜 선택했나?</div>
-      <div class="design-point-title">DataAsset기반 무기 시스템</div>
-      <div class="design-point-body">
-        기존의 무기 시스템은 새로운 무기 클래스를 추가하기 위해 기존 코드를 수정해야 했습니다.
-        이는 코드 재사용성을 떨어뜨리고 유지보수를 어렵게 만듭니다.
-        새로운 무기 클래스를 추가시 기존 코드를 수정할 필요가 없도록 DataAsset을 사용하여 구현했습니다.
+
+    <div class="design-grid">
+      <div class="design-card">
+        <div class="design-card-q">왜 선택했나?</div>
+        <div class="design-card-title">GAS (Gameplay Ability System)</div>
+        <div class="design-card-body">
+          스킬 추가 시 캐릭터 클래스를 직접 수정하지 않아도 되는 구조가 필요했습니다.<br>
+           GameplayTag 기반 상태 제어로 코드 결합도를 낮추고,<br>
+           쿨타임·비용·이펙트를 하나의 Ability 단위로 캡슐화했습니다.</div>
       </div>
-    </div>
-    <div class="design-point">
-      <div class="design-point-q">왜 선택했나?</div>
-      <div class="design-point-title">Tag 기반 상태 관리</div>
-      <div class="design-point-body">
-        bool 변수로 상태를 관리하면 조건 조합이 폭발적으로 증가합니다.
-        GameplayTag 계층 구조(State.Combat.Stunned 등)로 상태 추가·삭제가
-        명확하고, 태그 쿼리만으로 조건 분기가 가능해집니다.
+      <div class="design-card">
+        <div class="design-card-q">왜 선택했나?</div>
+        <div class="design-card-title">Weapon System</div>
+        <div class="design-card-body">
+          다양한 무기 확장과 유지보수를 고려해 무기 시스템을 모듈화된 구조로 설계했습니다.<br>
+          무기 교체, 공격 방식 변경을 데이터 기반으로 처리하여 코드 수정 없이 새로운 무기를 추가할 수 있도록 하는 것을 목표로 했습니다.</div>
       </div>
-    </div>
-    <div class="design-point">
-      <div class="design-point-q">왜 선택했나?</div>
-      <div class="design-point-title">Enhanced Input System</div>
-      <div class="design-point-body">
-        레거시 Input Binding 방식은 컨텍스트 전환(UI, Combat, Cutscene)이 불편합니다.
-        Enhanced Input의 InputMappingContext를 활용해 상태별 입력 레이어를
-        런타임에 추가·제거하는 구조로 설계했습니다.
+      <div class="design-card">
+        <div class="design-card-q">왜 선택했나?</div>
+        <div class="design-card-title">Tag 기반 상태 관리</div>
+        <div class="design-card-body">
+          bool 변수로 상태를 관리하면 조건 조합이 폭발적으로 증가합니다.<br>
+          GameplayTag 계층 구조로 상태 추가·삭제가 명확하고, 태그 쿼리만으로 조건 분기가 가능합니다.</div>
+      </div>
+      <div class="design-card">
+        <div class="design-card-q">왜 선택했나?</div>
+        <div class="design-card-title">Enhanced Input System</div>
+        <div class="design-card-body">레거시 Input Binding은 컨텍스트 전환(UI, Combat, Cutscene)이 불편합니다.<br>
+           InputMappingContext를 활용해 상태별 입력 레이어를 런타임에 추가·제거하는 구조로 설계했습니다.</div>
       </div>
     </div>
   </div>
 </section>
 
-<hr class="full-sep">
+<hr class="divider">
 
-<!-- ─── DEEP DIVE ─── -->
+<!-- DEEP DIVE -->
 <section id="deepdive">
-  <div class="section-header">
-    <p class="section-label">03 — Deep Dive</p>
+  <div class="page">
+    <div class="section-eyebrow">03 — Deep Dive</div>
     <h2 class="section-title">핵심 구현</h2>
-    <p class="section-sub">3가지 핵심 시스템의 구현 방식을 코드와 함께 설명합니다.</p>
-  </div>
+    <p class="section-desc">3가지 핵심 시스템의 구현 방식을 코드,이미지지와 함께 설명합니다.</p>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab(event,'tab-Weapon')">Weapon System</button>
-    <button class="tab-btn" onclick="switchTab(event,'tab-gas')">Ability System</button>
-    <button class="tab-btn" onclick="switchTab(event,'tab-move')">Movement</button>
-  </div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(event,'tab-anim')">Animation System</button>
+      <button class="tab-btn" onclick="switchTab(event,'tab-gas')">Ability System</button>
+      <button class="tab-btn" onclick="switchTab(event,'tab-move')">Movement</button>
+    </div>
 
-  <!-- TAB: Weapon System -->
-  <div id="tab-Weapon" class="tab-content active">
-    <div class="deep-dive-grid">
-      <div class="deep-text">
-        <h3>Weapon System 구조</h3>
-        <p>
-          DataAsset에 캐릭터의 무기를 등록하고,<br>
-          런타임에 현재 무기의 정보를 가져와<br>
-          캐릭터에 무기를 부여하는 구조로 설계했습니다.
-        </p>
-        <ul>
-          <li>UK_WeaponData: 각 무기를 카테고리별로 등록하여 관리</li>
-          <li>UK_StatusAnimData: 선별된 카테고리의 무기의 정보를 등록하여 관리</li>
-          <li>UK_AnimData: 각 무기별 다른 콤보 공격을 정의하여 관리</li>
-          <li>캐릭터는 UK_WeaponData를 소유 런타임중 장착하고자 하는 무기의 태그를 기반으로 UK_StatusAnimData를 참조
-            이후 입력이 되는 공격을 구분하여 UK_AnimData를 참조하여 공격을 실행합니다.
-          </li>
-        </ul>
-      </div>
-      <div>
-        <div class="code-block">
-          <img src="Images/WeaponData.png" alt="Weapon system code example" />
+    <div id="tab-anim" class="tab-content active">
+      <div class="deep-grid">
+        <div class="deep-text">
+          <h3>WeaponSystem 구조</h3>
+          <p>런타임에 현재 장착중인 무기와 상태, 입력에 따라 콤보 공격을 선택합니다.</p>
+          <ul>
+            <li>UK_WeaponData : 캐릭터의 무기를 카테고리 별로 등록</li>
+            <li>UK_StatusAnimData : 무기 부착 관련 정보와 상태 기반 TMap검색을 통한 UK_AnimData를 등록</li>
+            <li>UK_AnimData : 캐릭터가 출력할 몽타주를 등록</li>
+            <li>플레이어의 입력 & 캐릭터의 상태에 따른 애니메이션 </li>
+
+
+          </ul>
         </div>
-        <div class="result-block">
-          <img src="result.png" alt="Weapon system result example" />
+        <div>
+          <img src="images/WeaponData.png" class="code-img" />
+          <img src="images/StatusData.png" class="code-img" />
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- TAB: GAS -->
-  <div id="tab-gas" class="tab-content">
-    <div class="deep-dive-grid">
-      <div class="deep-text">
-        <h3>Ability System 설계</h3>
-        <p>
-          GAS의 AbilitySystemComponent를 PlayerState에 배치하고,
-          리스폰 시에도 어빌리티·어트리뷰트가 유지되도록 설계했습니다.
-        </p>
-        <ul>
-          <li>ASC는 PlayerState, Avatar는 Character로 분리</li>
-          <li>SetByCaller로 런타임 데미지 값을 Ability에서 직접 전달</li>
-          <li>GameplayTag로 Cooldown/Cost Effect 명확히 구분</li>
-        </ul>
-      </div>
-      <div>
-        <div class="code-block" data-lang="C++">
-          <pre><span class="c-comment">// SetByCaller를 통한 데미지 전달</span>
+    <div id="tab-gas" class="tab-content">
+      <div class="deep-grid">
+        <div class="deep-text">
+          <h3>Ability System 설계</h3>
+          <p>ASC를 PlayerState에 배치하고, 리스폰 시에도 어빌리티·어트리뷰트가 유지되도록 설계했습니다.</p>
+          <ul>
+            <li>ASC는 PlayerState, Avatar는 Character로 분리</li>
+            <li>SetByCaller로 런타임 데미지 값을 직접 전달</li>
+            <li>GameplayTag로 Cooldown/Cost Effect 명확히 구분</li>
+            <li>GameplayCue 분리로 클라이언트 이펙트 독립 처리</li>
+          </ul>
+        </div>
+        <div>
+          <div class="code-block" data-lang="C++"><pre><span class="c-comment">// SetByCaller를 통한 데미지 전달</span>
 <span class="c-keyword">void</span> <span class="c-type">UGA_MeleeAttack</span>::<span class="c-fn">ApplyDamage</span>(
     <span class="c-type">AActor</span>* Target)
 {
     <span class="c-type">FGameplayEffectSpecHandle</span> SpecHandle =
         <span class="c-fn">MakeOutgoingGameplayEffectSpec</span>(
-            DamageEffectClass, GetAbilityLevel());
+            DamageEffectClass,
+            GetAbilityLevel());
 
-    <span class="c-comment">// 런타임에 데미지 값 주입</span>
     SpecHandle.Data-><span class="c-fn">SetSetByCallerMagnitude</span>(
         <span class="c-type">TAG_Data_Damage</span>,
         BaseDamage * ComboMultiplier);
 
     <span class="c-fn">ApplyGameplayEffectSpecToTarget</span>(
-        SpecHandle,
-        <span class="c-fn">UAbilitySystemGlobals</span>::
-        <span class="c-fn">GetAbilitySystemComponentFromActor</span>(Target));
-}</pre>
-        </div>
-        <div class="code-block" data-lang="C++">
-          <pre><span class="c-comment">// Tag 기반 어빌리티 실행 조건</span>
+        SpecHandle, <span class="c-fn">GetASC</span>(Target));
+}</pre></div>
+          <div class="code-block" data-lang="C++"><pre><span class="c-comment">// Tag 기반 어빌리티 실행 조건</span>
 <span class="c-keyword">bool</span> <span class="c-type">UGA_MeleeAttack</span>::<span class="c-fn">CanActivateAbility</span>(
     ...) <span class="c-keyword">const</span>
 {
-    <span class="c-comment">// Stun/Dead 상태면 사용 불가</span>
-    <span class="c-keyword">if</span> (<span class="c-fn">HasMatchingGameplayTag</span>(
-            <span class="c-type">TAG_State_Stunned</span>) ||
-        <span class="c-fn">HasMatchingGameplayTag</span>(
-            <span class="c-type">TAG_State_Dead</span>))
+    <span class="c-keyword">if</span> (<span class="c-fn">HasMatchingGameplayTag</span>(<span class="c-type">TAG_State_Stunned</span>)
+     || <span class="c-fn">HasMatchingGameplayTag</span>(<span class="c-type">TAG_State_Dead</span>))
     {
         <span class="c-keyword">return false</span>;
     }
-    <span class="c-keyword">return</span> <span class="c-keyword">Super</span>::<span class="c-fn">CanActivateAbility</span>(...);
-}</pre>
+    <span class="c-keyword">return Super</span>::<span class="c-fn">CanActivateAbility</span>(...);
+}</pre></div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- TAB: Movement -->
-  <div id="tab-move" class="tab-content">
-    <div class="deep-dive-grid">
-      <div class="deep-text">
-        <h3>커스텀 Movement 처리</h3>
-        <p>
-          UCharacterMovementComponent를 상속해 상태별 이동 파라미터를
-          동적으로 변경하는 구조로 설계했습니다.
-        </p>
-        <ul>
-          <li>Sprint / Walk / Combat Stance별 MaxWalkSpeed 분리</li>
-          <li>회전 처리: UseControllerDesiredRotation + Yaw 보간</li>
-          <li>회피 도중 입력 버퍼링으로 연속 동작 지원</li>
-          <li>Tick 주기 조절: 일정 거리 이상 캐릭터는 업데이트 빈도 감소</li>
-        </ul>
-      </div>
-      <div>
-        <div class="code-block" data-lang="C++">
-          <pre><span class="c-comment">// 상태 기반 이동 속도 설정</span>
+    <div id="tab-move" class="tab-content">
+      <div class="deep-grid">
+        <div class="deep-text">
+          <h3>커스텀 Movement 처리</h3>
+          <p>UCharacterMovementComponent를 상속해 상태별 이동 파라미터를 동적으로 변경하는 구조로 설계했습니다.</p>
+          <ul>
+            <li>Sprint / Walk / Combat Stance별 MaxWalkSpeed 분리</li>
+            <li>회전 처리: UseControllerDesiredRotation + Yaw 보간</li>
+            <li>회피 도중 입력 버퍼링으로 연속 동작 지원</li>
+            <li>거리 기반 Tick 주기 조절로 성능 절약</li>
+          </ul>
+        </div>
+        <div>
+          <div class="code-block" data-lang="C++"><pre><span class="c-comment">// 상태 기반 이동 속도 설정</span>
 <span class="c-keyword">void</span> <span class="c-type">UMyCharMovement</span>::<span class="c-fn">UpdateMovementParams</span>()
 {
     <span class="c-keyword">const bool</span> bSprinting =
         <span class="c-fn">HasTag</span>(<span class="c-type">TAG_State_Sprinting</span>);
-    <span class="c-keyword">const bool</span> bInCombat  =
+    <span class="c-keyword">const bool</span> bInCombat =
         <span class="c-fn">HasTag</span>(<span class="c-type">TAG_State_Combat</span>);
 
-    <span class="c-keyword">if</span> (bSprinting)
-        MaxWalkSpeed = SprintSpeed;     <span class="c-comment">// 600</span>
-    <span class="c-keyword">else if</span> (bInCombat)
-        MaxWalkSpeed = CombatWalkSpeed; <span class="c-comment">// 300</span>
-    <span class="c-keyword">else</span>
-        MaxWalkSpeed = DefaultSpeed;    <span class="c-comment">// 450</span>
+    <span class="c-keyword">if</span>      (bSprinting) MaxWalkSpeed = <span class="c-num">600.f</span>;
+    <span class="c-keyword">else if</span> (bInCombat)  MaxWalkSpeed = <span class="c-num">300.f</span>;
+    <span class="c-keyword">else</span>                 MaxWalkSpeed = <span class="c-num">450.f</span>;
 
-    <span class="c-comment">// 전투 중 회전 즉시 반응</span>
-    bOrientRotationToMovement = !bInCombat;
-    bUseControllerDesiredRotation = bInCombat;
-}</pre>
+    bOrientRotationToMovement     = !bInCombat;
+    bUseControllerDesiredRotation =  bInCombat;
+}</pre></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<hr class="full-sep">
+<hr class="divider">
 
-<!-- ─── OPTIMIZATION ─── -->
+<!-- OPTIMIZATION -->
 <section id="optimization">
-  <div class="section-header">
-    <p class="section-label">04 — Optimization</p>
+  <div class="page">
+    <div class="section-eyebrow">04 — Optimization</div>
     <h2 class="section-title">최적화</h2>
-    <p class="section-sub">문제 인식 → 분석 → 해결 → 수치 검증까지의 과정입니다.</p>
-  </div>
+    <p class="section-desc">문제 인식 → 분석 → 해결 → 수치 검증까지의 과정입니다.</p>
 
-  <div class="opt-grid">
-    <div class="opt-card">
-      <div class="opt-card-label">문제 상황</div>
-      <div class="opt-card-title">Draw Call 급증</div>
-      <div class="opt-card-body">
-        캐릭터 수 증가 시 <span class="hl-r">60+</span> Draw Call 발생.
-        <code>stat unit</code>으로 GPU 병목 확인.
-        각 캐릭터의 Equipment가 별도 머티리얼 인스턴스를 사용하여 Batching 불가.
+    <div class="opt-grid">
+      <div class="opt-card">
+        <div class="opt-card-label">문제 상황</div>
+        <div class="opt-card-title">Draw Call 급증</div>
+        <div class="opt-card-body">캐릭터 수 증가 시 Draw Call <strong>62+</strong> 발생. <code>stat unit</code>으로 GPU 병목 확인. Equipment별 개별 머티리얼 인스턴스가 Batching을 차단.</div>
       </div>
-    </div>
-    <div class="opt-card">
-      <div class="opt-card-label">분석 방법</div>
-      <div class="opt-card-title">Profiling 도구</div>
-      <div class="opt-card-body">
-        <span class="hl">stat unit</span> / <span class="hl">stat gpu</span>로 프레임 분해.<br>
-        <span class="hl">dumpticks</span>로 Tick 비용 오브젝트별 확인.<br>
-        <span class="hl">Unreal Insights</span>로 스레드별 타임라인 분석.
+      <div class="opt-card">
+        <div class="opt-card-label">분석 방법</div>
+        <div class="opt-card-title">Profiling 도구</div>
+        <div class="opt-card-body"><code>stat unit</code> · <code>stat gpu</code>로 프레임 분해. <code>dumpticks</code>로 Tick 비용 확인. <code>Unreal Insights</code>로 스레드별 타임라인 분석.</div>
       </div>
-    </div>
-    <div class="opt-card">
-      <div class="opt-card-label">해결 방법</div>
-      <div class="opt-card-title">멀티 솔루션</div>
-      <div class="opt-card-body">
-        LOD 레벨 설정, 거리 기반 Tick Rate 감소.
-        <span class="hl">Animation Budget Allocator</span> 적용.
-        머티리얼 파라미터 통합으로 GPU Instancing 활성화.
-      </div>
-    </div>
-  </div>
-
-  <div class="before-after">
-    <div class="ba-panel">
-      <div class="ba-label before">⬥ Before</div>
-      <div class="metric-row">
-        <span class="metric-name">Draw Calls (10 actors)</span>
-        <span class="metric-val bad">62<span class="metric-unit">calls</span></span>
-      </div>
-      <div class="progress-bar-wrap">
-        <div class="progress-bar-track">
-          <div class="progress-bar-fill bad" style="width:100%"></div>
-        </div>
-      </div>
-      <div class="metric-row">
-        <span class="metric-name">Tick Cost (GameThread)</span>
-        <span class="metric-val bad">18.4<span class="metric-unit">ms</span></span>
-      </div>
-      <div class="progress-bar-wrap">
-        <div class="progress-bar-track">
-          <div class="progress-bar-fill bad" style="width:88%"></div>
-        </div>
-      </div>
-      <div class="metric-row">
-        <span class="metric-name">Animation Update (50m+)</span>
-        <span class="metric-val bad">Full<span class="metric-unit">rate</span></span>
-      </div>
-      <div class="progress-bar-wrap">
-        <div class="progress-bar-track">
-          <div class="progress-bar-fill bad" style="width:100%"></div>
-        </div>
-      </div>
-      <div class="metric-row">
-        <span class="metric-name">Frame Time</span>
-        <span class="metric-val bad">28.1<span class="metric-unit">ms</span></span>
+      <div class="opt-card">
+        <div class="opt-card-label">해결 방법</div>
+        <div class="opt-card-title">멀티 솔루션 적용</div>
+        <div class="opt-card-body">LOD 설정 + 거리 기반 Tick Rate 감소. <code>Animation Budget Allocator</code> 적용. 머티리얼 파라미터 통합으로 GPU Instancing 활성화.</div>
       </div>
     </div>
 
-    <div class="ba-panel">
-      <div class="ba-label after">⬥ After</div>
-      <div class="metric-row">
-        <span class="metric-name">Draw Calls (10 actors)</span>
-        <span class="metric-val good">8<span class="metric-unit">calls</span></span>
-      </div>
-      <div class="progress-bar-wrap">
-        <div class="progress-bar-track">
-          <div class="progress-bar-fill good" style="width:13%"></div>
+    <div class="ba-wrap">
+      <div class="ba-panel">
+        <div class="ba-label before">Before</div>
+        <div class="metric-row">
+          <span class="metric-name">Draw Calls (10 actors)</span>
+          <span class="metric-val bad">62<span class="metric-unit">calls</span></span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-name">Tick Cost (GameThread)</span>
+          <span class="metric-val bad">18.4<span class="metric-unit">ms</span></span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-name">Animation (50m+)</span>
+          <span class="metric-val bad" style="font-size:16px;">Full rate</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-name">Frame Time</span>
+          <span class="metric-val bad">28.1<span class="metric-unit">ms</span></span>
         </div>
       </div>
-      <div class="metric-row">
-        <span class="metric-name">Tick Cost (GameThread)</span>
-        <span class="metric-val good">11.4<span class="metric-unit">ms</span></span>
-      </div>
-      <div class="progress-bar-wrap">
-        <div class="progress-bar-track">
-          <div class="progress-bar-fill good" style="width:55%"></div>
+      <div class="ba-panel">
+        <div class="ba-label after">After</div>
+        <div class="metric-row">
+          <span class="metric-name">Draw Calls (10 actors)</span>
+          <span class="metric-val good">8<span class="metric-unit">calls</span></span>
         </div>
-      </div>
-      <div class="metric-row">
-        <span class="metric-name">Animation Update (50m+)</span>
-        <span class="metric-val good">Budget<span class="metric-unit">limited</span></span>
-      </div>
-      <div class="progress-bar-wrap">
-        <div class="progress-bar-track">
-          <div class="progress-bar-fill good" style="width:28%"></div>
+        <div class="metric-row">
+          <span class="metric-name">Tick Cost (GameThread)</span>
+          <span class="metric-val good">11.4<span class="metric-unit">ms</span></span>
         </div>
-      </div>
-      <div class="metric-row">
-        <span class="metric-name">Frame Time</span>
-        <span class="metric-val good">14.6<span class="metric-unit">ms</span></span>
+        <div class="metric-row">
+          <span class="metric-name">Animation (50m+)</span>
+          <span class="metric-val good" style="font-size:16px;">Budget limited</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-name">Frame Time</span>
+          <span class="metric-val good">14.6<span class="metric-unit">ms</span></span>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<hr class="full-sep">
+<hr class="divider">
 
-<!-- ─── PROBLEMS ─── -->
+<!-- PROBLEMS -->
 <section id="problems">
-  <div class="section-header">
-    <p class="section-label">05 — Problem Solving</p>
+  <div class="page">
+    <div class="section-eyebrow">05 — Problem Solving</div>
     <h2 class="section-title">문제 해결 경험</h2>
-    <p class="section-sub">실제 겪은 버그와 분석·해결 과정. 이게 진짜 실무 능력입니다.</p>
-  </div>
+    <p class="section-desc">실제 겪은 버그와 분석·해결 과정입니다. 이게 진짜 실무 능력입니다.</p>
 
-  <div class="problem-list">
-    <div class="problem-item" onclick="toggleProblem(this)">
-      <div class="problem-header">
-        <span class="problem-num">01</span>
-        <span class="problem-title">스킬 쿨타임이 적용되지 않는 문제</span>
-        <span class="tag red">GAS</span>
-        <span class="problem-chevron">▾</span>
-      </div>
-      <div class="problem-body">
-        <div class="problem-step">
-          <span class="problem-step-label">현상</span>
-          <div class="problem-step-body">
-            스킬 사용 후 쿨타임 없이 즉시 재사용 가능. HUD의 쿨타임 UI는 정상 작동.
-          </div>
+    <div class="problem-list">
+      <div class="problem-item" onclick="toggleProblem(this)">
+        <div class="problem-header">
+          <span class="problem-num">01</span>
+          <span class="problem-title">스킬 쿨타임이 적용되지 않는 문제</span>
+          <span class="tag tag-blue" style="font-size:10px;padding:3px 8px;">GAS</span>
+          <span class="problem-chevron">▾</span>
         </div>
-        <div class="problem-step">
-          <span class="problem-step-label">원인 분석</span>
-          <div class="problem-step-body">
-            ASC를 Character에 배치했을 때, 리스폰 시 캐릭터가 Destroy → Spawn되면서
-            ASC도 함께 초기화됨. 쿨타임 GameplayEffect가 유지되지 않았던 것.
-            <span class="hl">AbilitySystemComponent::GetActivatableAbilities()</span>로
-            런타임 상태 확인 후 원인 특정.
+        <div class="problem-body">
+          <div class="problem-step">
+            <span class="problem-step-label">현상</span>
+            <div class="problem-step-body">스킬 사용 후 쿨타임 없이 즉시 재사용 가능. HUD의 쿨타임 UI는 정상 작동.</div>
           </div>
-        </div>
-        <div class="problem-step">
-          <span class="problem-step-label">해결</span>
-          <div class="problem-step-body">
-            ASC를 PlayerState로 이동. Character는 Avatar Actor만 담당하도록 분리.
-            <code>InitAbilityActorInfo(PlayerState, Character)</code>로 재연결.
-            리스폰 후에도 ASC·어트리뷰트 유지 확인.
+          <div class="problem-step">
+            <span class="problem-step-label">원인 분석</span>
+            <div class="problem-step-body">ASC를 Character에 배치했을 때, 리스폰 시 캐릭터가 Destroy → Spawn되면서 ASC도 함께 초기화됨. 쿨타임 GameplayEffect가 유지되지 않았던 것. <code>GetActivatableAbilities()</code>로 런타임 상태 확인 후 원인 특정.</div>
+          </div>
+          <div class="problem-step">
+            <span class="problem-step-label">해결</span>
+            <div class="problem-step-body">ASC를 PlayerState로 이동. Character는 Avatar Actor만 담당하도록 분리. <code>InitAbilityActorInfo(PlayerState, Character)</code>로 재연결. 리스폰 후에도 ASC·어트리뷰트 유지 확인.</div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="problem-item" onclick="toggleProblem(this)">
-      <div class="problem-header">
-        <span class="problem-num">02</span>
-        <span class="problem-title">Tick 비용이 특정 조건에서 급증하는 문제</span>
-        <span class="tag yellow">Performance</span>
-        <span class="problem-chevron">▾</span>
-      </div>
-      <div class="problem-body">
-        <div class="problem-step">
-          <span class="problem-step-label">현상</span>
-          <div class="problem-step-body">
-            일반 상태에서는 정상이나, 전투 진입 시 GameThread Tick이 2배 이상 상승.
-          </div>
+      <div class="problem-item" onclick="toggleProblem(this)">
+        <div class="problem-header">
+          <span class="problem-num">02</span>
+          <span class="problem-title">Tick 비용이 전투 진입 시 2배 이상 급증</span>
+          <span class="tag tag-yellow" style="font-size:10px;padding:3px 8px;">Performance</span>
+          <span class="problem-chevron">▾</span>
         </div>
-        <div class="problem-step">
-          <span class="problem-step-label">원인 분석</span>
-          <div class="problem-step-body">
-            <code>dumpticks</code> 실행 결과, AttackTraceComponent가 매 Tick 
-            SphereTrace를 실행하고 있음 발견. 전투 진입 시 무조건 Trace 활성화되는
-            로직 오류. Ability 활성 중에만 Trace가 동작해야 함.
+        <div class="problem-body">
+          <div class="problem-step">
+            <span class="problem-step-label">현상</span>
+            <div class="problem-step-body">일반 상태에서는 정상이나, 전투 진입 시 GameThread Tick이 2배 이상 상승.</div>
           </div>
-        </div>
-        <div class="problem-step">
-          <span class="problem-step-label">해결</span>
-          <div class="problem-step-body">
-            Ability의 <code>ActivateAbility</code>에서 Trace 시작,
-            <code>EndAbility</code>에서 Trace 중단하도록 수정.
-            Tick 자체를 Disable하고 필요 시 수동 호출 방식으로 전환.
-            GameThread Tick 18.4ms → 11.4ms 감소 (38% 절감).
+          <div class="problem-step">
+            <span class="problem-step-label">원인 분석</span>
+            <div class="problem-step-body"><code>dumpticks</code> 실행 결과, AttackTraceComponent가 매 Tick SphereTrace를 실행하고 있음을 발견. 전투 진입 시 무조건 Trace가 활성화되는 로직 오류.</div>
+          </div>
+          <div class="problem-step">
+            <span class="problem-step-label">해결</span>
+            <div class="problem-step-body">Ability의 <code>ActivateAbility</code>에서 Trace 시작, <code>EndAbility</code>에서 Trace 중단. Tick 자체를 Disable하고 필요 시 수동 호출 방식으로 전환. GameThread Tick 18.4ms → 11.4ms (38% 절감).</div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="problem-item" onclick="toggleProblem(this)">
-      <div class="problem-header">
-        <span class="problem-num">03</span>
-        <span class="problem-title">PlayerStart 위치 문제 — 캐릭터가 맵 밖에 스폰</span>
-        <span class="tag">Gameplay</span>
-        <span class="problem-chevron">▾</span>
-      </div>
-      <div class="problem-body">
-        <div class="problem-step">
-          <span class="problem-step-label">현상</span>
-          <div class="problem-step-body">
-            특정 맵 로드 후 캐릭터가 월드 원점(0,0,0) 또는 맵 밖에 스폰.
-          </div>
+      <div class="problem-item" onclick="toggleProblem(this)">
+        <div class="problem-header">
+          <span class="problem-num">03</span>
+          <span class="problem-title">PlayerStart 미설정 시 캐릭터가 맵 밖에 스폰</span>
+          <span class="tag tag-gray" style="font-size:10px;padding:3px 8px;">Gameplay</span>
+          <span class="problem-chevron">▾</span>
         </div>
-        <div class="problem-step">
-          <span class="problem-step-label">원인 분석</span>
-          <div class="problem-step-body">
-            GameMode의 FindPlayerStart가 특정 조건에서 null 반환.
-            PlayerStart 태그 필터링 로직에서 태그 미설정 시 폴백 처리 누락.
+        <div class="problem-body">
+          <div class="problem-step">
+            <span class="problem-step-label">현상</span>
+            <div class="problem-step-body">특정 맵 로드 후 캐릭터가 월드 원점(0,0,0) 또는 맵 밖에 스폰.</div>
           </div>
-        </div>
-        <div class="problem-step">
-          <span class="problem-step-label">해결</span>
-          <div class="problem-step-body">
-            <code>ChoosePlayerStart_Implementation</code> 오버라이드.
-            유효한 PlayerStart가 없을 경우 월드 Origin 대신 지정된 Safety Spawn으로 폴백.
-            태그 검색 실패 시 로그 출력으로 미스 조기 탐지.
+          <div class="problem-step">
+            <span class="problem-step-label">원인 분석</span>
+            <div class="problem-step-body">GameMode의 FindPlayerStart가 특정 조건에서 null 반환. PlayerStart 태그 필터링 로직에서 태그 미설정 시 폴백 처리 누락.</div>
+          </div>
+          <div class="problem-step">
+            <span class="problem-step-label">해결</span>
+            <div class="problem-step-body"><code>ChoosePlayerStart_Implementation</code> 오버라이드. 유효한 PlayerStart 없을 경우 Safety Spawn으로 폴백. 태그 검색 실패 시 로그 출력으로 조기 탐지.</div>
           </div>
         </div>
       </div>
@@ -559,89 +436,81 @@
   </div>
 </section>
 
-<hr class="full-sep">
+<hr class="divider">
 
-<!-- ─── KEYWORDS ─── -->
-<section id="keywords" style="padding-top: 80px; padding-bottom: 80px;">
-  <p class="section-label">Tech Keywords</p>
-  <div class="keywords-wall">
-    <span class="kw-item kw-big kw-accent">Unreal Engine 5</span>
-    <span class="kw-item">Blueprint</span>
-    <span class="kw-item kw-big">C++</span>
-    <span class="kw-item kw-accent">Gameplay Ability System</span>
-    <span class="kw-item">GameplayTag</span>
-    <span class="kw-item kw-big">Motion Matching</span>
-    <span class="kw-item">Animation Blueprint</span>
-    <span class="kw-item">PoseSearch</span>
-    <span class="kw-item kw-accent">Optimization</span>
-    <span class="kw-item kw-big">Profiling</span>
-    <span class="kw-item">Unreal Insights</span>
-    <span class="kw-item">stat unit</span>
-    <span class="kw-item">LOD</span>
-    <span class="kw-item kw-accent">Animation Budget</span>
-    <span class="kw-item">CharacterMovement</span>
-    <span class="kw-item">Enhanced Input</span>
-    <span class="kw-item kw-big">GameplayCue</span>
-    <span class="kw-item">SetByCaller</span>
-    <span class="kw-item">PlayerState</span>
-    <span class="kw-item kw-accent">Client Programmer</span>
+<!-- KEYWORDS -->
+<section style="padding: 56px 0;">
+  <div class="page">
+    <div class="section-eyebrow" style="margin-bottom:20px;">Tech Stack</div>
+    <div class="kw-wall">
+      <span class="kw kw-main kw-accent">Unreal Engine 5</span>
+      <span class="kw kw-main kw-accent">C++</span>
+      <span class="kw kw-accent">Gameplay Ability System</span>
+      <span class="kw kw-accent">Optimization</span>
+      <span class="kw">GameplayTag</span>
+      <span class="kw">Unreal Insights</span>
+      <span class="kw">stat unit</span>
+      <span class="kw">CharacterMovement</span>
+      <span class="kw">Enhanced Input</span>
+      <span class="kw">SetByCaller</span>
+      <span class="kw">PlayerState</span>
+      <span class="kw">Profiling</span>
+    </div>
   </div>
 </section>
 
-<!-- ─── FOOTER ─── -->
 <footer>
-  <span>© 2025 — Client Programmer Portfolio</span>
-  <span>Built with <span style="color:var(--accent)">Unreal Engine 5</span> · C++ · GAS</span>
-  <span><a href="#">Contact</a> · <a href="#">GitHub</a></span>
+  <div class="page">
+    <div class="footer-inner">
+      <span>Client Programmer Portfolio</span>
+      <span>Unreal Engine 5 · C++ · GAS</span>
+      <span><a href="#">Contact</a> · <a href="https://github.com/sidsru">GitHub</a></span>
+    </div>
+  </div>
 </footer>
 
 <script>
-  // ─── TABS ───
-  function switchTab(e, id) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    e.target.classList.add('active');
-    document.getElementById(id).classList.add('active');
-  }
+function switchTab(e, id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
 
-  // ─── ACCORDION ───
-  function toggleProblem(el) {
-    const wasOpen = el.classList.contains('open');
-    document.querySelectorAll('.problem-item.open').forEach(i => i.classList.remove('open'));
-    if (!wasOpen) el.classList.add('open');
-  }
+function toggleProblem(el) {
+  const wasOpen = el.classList.contains('open');
+  document.querySelectorAll('.problem-item.open').forEach(i => i.classList.remove('open'));
+  if (!wasOpen) el.classList.add('open');
+}
 
-  // ─── SCROLL REVEAL ───
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.feature-cell, .design-point, .opt-card, .problem-item, .arch-node').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(16px)';
-    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    observer.observe(el);
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+      io.unobserve(e.target);
+    }
   });
+}, { threshold: 0.08 });
 
-  // ─── NAV ACTIVE LINK ───
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
+document.querySelectorAll(
+  '.feature-cell, .design-card, .opt-card, .problem-item, .arch-node, .stat'
+).forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(12px)';
+  el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+  io.observe(el);
+});
 
-  window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 120) current = s.id;
-    });
-    navLinks.forEach(a => {
-      a.style.color = a.getAttribute('href') === '#' + current
-        ? 'var(--accent)' : '';
-    });
+const secs = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  secs.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
+  links.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + cur ? 'var(--accent)' : '';
   });
+});
 </script>
 </body>
 </html>

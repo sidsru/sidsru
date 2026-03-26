@@ -50,10 +50,6 @@
       </div>
       <div class="hero-stats">
         <div class="stat">
-          <span class="stat-num">62 → 8</span>
-          <div class="stat-label">Draw Call 감소</div>
-        </div>
-        <div class="stat">
           <span class="stat-num">38%</span>
           <div class="stat-label">Tick Cost 절감</div>
         </div>
@@ -76,9 +72,14 @@
     <p class="section-desc">이동·전투·스킬·피격·상태 시스템을 구현했습니다.</p>
 
     <div class="video-wrap">
+      <iframe 
+        class="video-player"
+        src="https://youtu.be/WOz54jvC5Wg"
+        title="Gameplay Demo"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
       <span class="video-wrap-meta">UE5 / C++ · 00:45</span>
-      <div class="play-btn"></div>
-      <span class="video-label">Gameplay Demo</span>
     </div>
 
     <div class="feature-grid">
@@ -181,9 +182,8 @@
     <p class="section-desc">3가지 핵심 시스템의 구현 방식을 코드,이미지지와 함께 설명합니다.</p>
 
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab(event,'tab-anim')">Animation System</button>
+      <button class="tab-btn active" onclick="switchTab(event,'tab-anim')">Weapon System</button>
       <button class="tab-btn" onclick="switchTab(event,'tab-gas')">Ability System</button>
-      <button class="tab-btn" onclick="switchTab(event,'tab-move')">Movement</button>
     </div>
 
     <div id="tab-anim" class="tab-content active">
@@ -196,6 +196,9 @@
             <li>UK_StatusAnimData : 무기 부착 관련 정보와 상태 기반 TMap검색을 통한 UK_AnimData를 등록</li>
             <li>UK_AnimData : 캐릭터가 출력할 몽타주를 등록</li>
             <li>플레이어의 입력 & 캐릭터의 상태에 따른 애니메이션 </li>
+            <br>
+            <h3>클래스 다이어그램</h3>
+          <img src="images/WeaponSystemDiagram.png" class="WeaponSystemDiagram-img" />
           </ul>
         </div>
         <div>
@@ -212,71 +215,71 @@
           <p>ASC를 PlayerState에 배치하고, 리스폰 시에도 어빌리티·어트리뷰트가 유지되도록 설계했습니다.</p>
           <ul>
             <li>ASC는 PlayerState, Avatar는 Character로 분리</li>
-            <li>SetByCaller로 런타임 데미지 값을 직접 전달</li>
+            <li>캐릭터의 스텟은 어트리뷰트셋으로 관리</li>
+            <li> ExecutionCalculation으로 데미지 계산적용</li>
             <li>GameplayTag로 Cooldown/Cost Effect 명확히 구분</li>
-            <li>GameplayCue 분리로 클라이언트 이펙트 독립 처리</li>
           </ul>
         </div>
         <div>
-          <div class="code-block" data-lang="C++"><pre><span class="c-comment">// SetByCaller를 통한 데미지 전달</span>
-<span class="c-keyword">void</span> <span class="c-type">UGA_MeleeAttack</span>::<span class="c-fn">ApplyDamage</span>(
-    <span class="c-type">AActor</span>* Target)
-{
+          <div class="code-block" data-lang="C++"><pre><span class="c-comment">// SetByCaller를 통한 값 전달</span>
+            <span class="c-keyword">void</span> <span class="c-type">AUK_CharacterBase</span>::<span class="c-fn">ChangeWeaponStat</span>(
+            <span class="c-type">const FUK_WeaponItemData</span>* WeaponStat)
+            {
+              <span class="c-type">SCOPE_CYCLE_COUNTER</span>(ChangeWeaponStat);
+              <span class="c-type">UAbilitySystemComponent</span>* ASC = <span class="c-fn">GetAbilitySystemComponent</span>();
+              <span class="c-keyword">if</span> (<span class="c-fn">IsValid</span>(ASC) == <span class="c-keyword">false</span>)
+              <span class="c-keyword">return</span>;
+              <span class="c-type">FGameplayEffectSpecHandle</span> SpecHandle =
+              ASC-><span class="c-fn">MakeOutgoingSpec</span>(WeaponStatEffect, <span class="c-num">1.f</span>, ASC-><span class="c-fn">MakeEffectContext</span>());
+              <span class="c-comment">// 기존 무기 효과 제거</span>
+              <span class="c-keyword">if</span> (WeaponEffectHandle.<span class="c-fn">IsValid</span>())
+              {
+                ASC-><span class="c-fn">RemoveActiveGameplayEffect</span>(WeaponEffectHandle);
+                WeaponEffectHandle.<span class="c-fn">Invalidate</span>();
+              }
+              <span class="c-keyword">if</span> (WeaponStat == <span class="c-keyword">nullptr</span>)
+              <span class="c-keyword">return</span>;
+              SpecHandle.Data-><span class="c-fn">SetSetByCallerMagnitude</span>(
+              UK_GameplayTags::Data::WeaponStat::ExtraAttackPower,
+              WeaponStat->ExtraAttackPower);
+
+  WeaponEffectHandle = ASC-><span class="c-fn">ApplyGameplayEffectSpecToSelf</span>(*SpecHandle.Data.Get());
+}</pre></div>
+        
+<div class="code-block" data-lang="C++"><pre><span class="c-comment">// SetSetByCallerMagnitude를 통한 값값 전달</span>
+  <span class="c-keyword">void</span> <span class="c-type">AUK_CharacterBase</span>::<span class="c-fn">HealStamina</span>()
+  {
+    <span class="c-type">SCOPE_CYCLE_COUNTER</span>(HealStamina);
+  
+    <span class="c-type">UAbilitySystemComponent</span>* ASC = <span class="c-fn">GetAbilitySystemComponent</span>();
+    <span class="c-keyword">if</span> (<span class="c-fn">IsValid</span>(ASC) == <span class="c-keyword">false</span>)
+      <span class="c-keyword">return</span>;
+  
     <span class="c-type">FGameplayEffectSpecHandle</span> SpecHandle =
-        <span class="c-fn">MakeOutgoingGameplayEffectSpec</span>(
-            DamageEffectClass,
-            GetAbilityLevel());
-
-    SpecHandle.Data-><span class="c-fn">SetSetByCallerMagnitude</span>(
-        <span class="c-type">TAG_Data_Damage</span>,
-        BaseDamage * ComboMultiplier);
-
-    <span class="c-fn">ApplyGameplayEffectSpecToTarget</span>(
-        SpecHandle, <span class="c-fn">GetASC</span>(Target));
-}</pre></div>
-          <div class="code-block" data-lang="C++"><pre><span class="c-comment">// Tag 기반 어빌리티 실행 조건</span>
-<span class="c-keyword">bool</span> <span class="c-type">UGA_MeleeAttack</span>::<span class="c-fn">CanActivateAbility</span>(
-    ...) <span class="c-keyword">const</span>
-{
-    <span class="c-keyword">if</span> (<span class="c-fn">HasMatchingGameplayTag</span>(<span class="c-type">TAG_State_Stunned</span>)
-     || <span class="c-fn">HasMatchingGameplayTag</span>(<span class="c-type">TAG_State_Dead</span>))
+      ASC-><span class="c-fn">MakeOutgoingSpec</span>(HealStaminaEffect, <span class="c-num">1.f</span>, ASC-><span class="c-fn">MakeEffectContext</span>());
+  
+    <span class="c-keyword">const</span> <span class="c-type">UUK_PlayerStatusAttributeSet</span>* Attributes =
+      ASC-><span class="c-fn">GetSet</span>&lt;<span class="c-type">UUK_PlayerStatusAttributeSet</span>&gt;();
+  
+    <span class="c-keyword">const</span> <span class="c-keyword">float</span> HealStaminaAmount =
+      Attributes-><span class="c-fn">GetMaxStamina</span>() * <span class="c-num">0.01f</span>;
+  
+    <span class="c-keyword">const</span> <span class="c-keyword">float</span> StaminaAmount =
+      Attributes-><span class="c-fn">GetCurrentStamina</span>();
+  
+    <span class="c-keyword">if</span> (StaminaAmount &gt;= Attributes-><span class="c-fn">GetMaxStamina</span>())
     {
-        <span class="c-keyword">return false</span>;
+      <span class="c-keyword">return</span>;
     }
-    <span class="c-keyword">return Super</span>::<span class="c-fn">CanActivateAbility</span>(...);
-}</pre></div>
-        </div>
-      </div>
-    </div>
-
-    <div id="tab-move" class="tab-content">
-      <div class="deep-grid">
-        <div class="deep-text">
-          <h3>커스텀 Movement 처리</h3>
-          <p>UCharacterMovementComponent를 상속해 상태별 이동 파라미터를 동적으로 변경하는 구조로 설계했습니다.</p>
-          <ul>
-            <li>Sprint / Walk / Combat Stance별 MaxWalkSpeed 분리</li>
-            <li>회전 처리: UseControllerDesiredRotation + Yaw 보간</li>
-            <li>회피 도중 입력 버퍼링으로 연속 동작 지원</li>
-            <li>거리 기반 Tick 주기 조절로 성능 절약</li>
-          </ul>
-        </div>
-        <div>
-          <div class="code-block" data-lang="C++"><pre><span class="c-comment">// 상태 기반 이동 속도 설정</span>
-<span class="c-keyword">void</span> <span class="c-type">UMyCharMovement</span>::<span class="c-fn">UpdateMovementParams</span>()
-{
-    <span class="c-keyword">const bool</span> bSprinting =
-        <span class="c-fn">HasTag</span>(<span class="c-type">TAG_State_Sprinting</span>);
-    <span class="c-keyword">const bool</span> bInCombat =
-        <span class="c-fn">HasTag</span>(<span class="c-type">TAG_State_Combat</span>);
-
-    <span class="c-keyword">if</span>      (bSprinting) MaxWalkSpeed = <span class="c-num">600.f</span>;
-    <span class="c-keyword">else if</span> (bInCombat)  MaxWalkSpeed = <span class="c-num">300.f</span>;
-    <span class="c-keyword">else</span>                 MaxWalkSpeed = <span class="c-num">450.f</span>;
-
-    bOrientRotationToMovement     = !bInCombat;
-    bUseControllerDesiredRotation =  bInCombat;
-}</pre></div>
+  
+    SpecHandle.Data-><span class="c-fn">SetSetByCallerMagnitude</span>(
+      UK_GameplayTags::Data::EndBattle::HealStamina,
+      HealStaminaAmount
+    );
+  
+    HealStaminaEffectHandle =
+      ASC-><span class="c-fn">ApplyGameplayEffectSpecToSelf</span>(*SpecHandle.Data.<span class="c-fn">Get</span>());
+  }</pre></div>
         </div>
       </div>
     </div>
@@ -295,18 +298,19 @@
     <div class="opt-grid">
       <div class="opt-card">
         <div class="opt-card-label">문제 상황</div>
-        <div class="opt-card-title">Draw Call 급증</div>
-        <div class="opt-card-body">캐릭터 수 증가 시 Draw Call <strong>62+</strong> 발생. <code>stat unit</code>으로 GPU 병목 확인. Equipment별 개별 머티리얼 인스턴스가 Batching을 차단.</div>
+        <div class="opt-card-title">전투 시작시 FPS급락</div>
+        <div class="opt-card-body">캐릭터와 몬스터 전투시 FPS가 급락하는 현상 발생. <code>stat unit</code>으로 CPU 병목 확인.
+        </div>
       </div>
       <div class="opt-card">
         <div class="opt-card-label">분석 방법</div>
         <div class="opt-card-title">Profiling 도구</div>
-        <div class="opt-card-body"><code>stat unit</code> · <code>stat gpu</code>로 프레임 분해. <code>dumpticks</code>로 Tick 비용 확인. <code>Unreal Insights</code>로 스레드별 타임라인 분석.</div>
+        <div class="opt-card-body">전투중 발생하는 로직에 <code>SCOPE_CYCLE_COUNTER()</code>로 로직 호출 비용 확인</br><code>TRACE_CPUPROFILER_EVENT_SCOPE()</code>를 사용하여<code>Unreal Insights</code>에서 SweepMultiByChannel가 너무 자주 호출 됨을 확인.</div>
       </div>
       <div class="opt-card">
         <div class="opt-card-label">해결 방법</div>
-        <div class="opt-card-title">멀티 솔루션 적용</div>
-        <div class="opt-card-body">LOD 설정 + 거리 기반 Tick Rate 감소. <code>Animation Budget Allocator</code> 적용. 머티리얼 파라미터 통합으로 GPU Instancing 활성화.</div>
+        <div class="opt-card-title">Tick -> 타이머 & 같은 탐색 대상은 공격 로직에서 제외</div>
+        <div class="opt-card-body">공격시 Tick -> 0.1초 타이머로 전환,</br> 또한 타이머가 작동 중일 때 같은 대상을 탐색하였다면 공격 로직에서 배제함으로 연산 속도 증가</div>
       </div>
     </div>
 
@@ -314,16 +318,8 @@
       <div class="ba-panel">
         <div class="ba-label before">Before</div>
         <div class="metric-row">
-          <span class="metric-name">Draw Calls (10 actors)</span>
-          <span class="metric-val bad">62<span class="metric-unit">calls</span></span>
-        </div>
-        <div class="metric-row">
           <span class="metric-name">Tick Cost (GameThread)</span>
           <span class="metric-val bad">18.4<span class="metric-unit">ms</span></span>
-        </div>
-        <div class="metric-row">
-          <span class="metric-name">Animation (50m+)</span>
-          <span class="metric-val bad" style="font-size:16px;">Full rate</span>
         </div>
         <div class="metric-row">
           <span class="metric-name">Frame Time</span>
@@ -333,16 +329,8 @@
       <div class="ba-panel">
         <div class="ba-label after">After</div>
         <div class="metric-row">
-          <span class="metric-name">Draw Calls (10 actors)</span>
-          <span class="metric-val good">8<span class="metric-unit">calls</span></span>
-        </div>
-        <div class="metric-row">
           <span class="metric-name">Tick Cost (GameThread)</span>
           <span class="metric-val good">11.4<span class="metric-unit">ms</span></span>
-        </div>
-        <div class="metric-row">
-          <span class="metric-name">Animation (50m+)</span>
-          <span class="metric-val good" style="font-size:16px;">Budget limited</span>
         </div>
         <div class="metric-row">
           <span class="metric-name">Frame Time</span>
@@ -360,28 +348,28 @@
   <div class="page">
     <div class="section-eyebrow">05 — Problem Solving</div>
     <h2 class="section-title">문제 해결 경험</h2>
-    <p class="section-desc">실제 겪은 버그와 분석·해결 과정입니다. 이게 진짜 실무 능력입니다.</p>
+    <p class="section-desc">실제 겪은 버그와 분석·해결 과정입니다.</p>
 
     <div class="problem-list">
       <div class="problem-item" onclick="toggleProblem(this)">
         <div class="problem-header">
           <span class="problem-num">01</span>
-          <span class="problem-title">스킬 쿨타임이 적용되지 않는 문제</span>
-          <span class="tag tag-blue" style="font-size:10px;padding:3px 8px;">GAS</span>
+          <span class="problem-title">간헐적으로 착지 공격이 반복적으로 수행되는 문제</span>
+          <span class="tag tag-blue" style="font-size:10px;padding:3px 8px;">Performance</span>
           <span class="problem-chevron">▾</span>
         </div>
         <div class="problem-body">
           <div class="problem-step">
             <span class="problem-step-label">현상</span>
-            <div class="problem-step-body">스킬 사용 후 쿨타임 없이 즉시 재사용 가능. HUD의 쿨타임 UI는 정상 작동.</div>
+            <div class="problem-step-body">몬스터 위에서 공중공격시 착지공격이 반복해서 수행 됨</div>
           </div>
           <div class="problem-step">
             <span class="problem-step-label">원인 분석</span>
-            <div class="problem-step-body">ASC를 Character에 배치했을 때, 리스폰 시 캐릭터가 Destroy → Spawn되면서 ASC도 함께 초기화됨. 쿨타임 GameplayEffect가 유지되지 않았던 것. <code>GetActivatableAbilities()</code>로 런타임 상태 확인 후 원인 특정.</div>
+            <div class="problem-step-body">Lended시 착지공격을 수행 이때 몬스터의 콜리전에 튀어서 애니메이션이 종료 되기 전 다시 착지한다면 lended에 연동된 함수가 다시 수행되는 문제</div>
           </div>
           <div class="problem-step">
             <span class="problem-step-label">해결</span>
-            <div class="problem-step-body">ASC를 PlayerState로 이동. Character는 Avatar Actor만 담당하도록 분리. <code>InitAbilityActorInfo(PlayerState, Character)</code>로 재연결. 리스폰 후에도 ASC·어트리뷰트 유지 확인.</div>
+            <div class="problem-step-body">Lended시 최초의 착지공격만 수행될 수 있도록 Boolean으로 판단</div>
           </div>
         </div>
       </div>
@@ -389,48 +377,26 @@
       <div class="problem-item" onclick="toggleProblem(this)">
         <div class="problem-header">
           <span class="problem-num">02</span>
-          <span class="problem-title">Tick 비용이 전투 진입 시 2배 이상 급증</span>
-          <span class="tag tag-yellow" style="font-size:10px;padding:3px 8px;">Performance</span>
+          <span class="problem-title">간헐적으로 어빌리티의 실행이 안되는 문제 </span>
+          <span class="tag tag-yellow" style="font-size:10px;padding:3px 8px;">GAS</span>
           <span class="problem-chevron">▾</span>
         </div>
         <div class="problem-body">
           <div class="problem-step">
             <span class="problem-step-label">현상</span>
-            <div class="problem-step-body">일반 상태에서는 정상이나, 전투 진입 시 GameThread Tick이 2배 이상 상승.</div>
+            <div class="problem-step-body">애니메이션을 출력하는 어빌리티가 실행중 파쿠르와 같이 다른 애니메이션이 동시에 출력된다면 어빌리티가 실행이 안됨.</div>
           </div>
           <div class="problem-step">
             <span class="problem-step-label">원인 분석</span>
-            <div class="problem-step-body"><code>dumpticks</code> 실행 결과, AttackTraceComponent가 매 Tick SphereTrace를 실행하고 있음을 발견. 전투 진입 시 무조건 Trace가 활성화되는 로직 오류.</div>
+            <div class="problem-step-body">공격 어빌리티의 EndAbility가 실행이 안되어 이로 인해 Attacking태그를 블락하고 있는 모든 어빌리티가 실행이 안된다고 추측, <code>Showdebug.AbilitySystem</code>를 통해 어빌리티가 존재하는지 파악</div>
           </div>
           <div class="problem-step">
             <span class="problem-step-label">해결</span>
-            <div class="problem-step-body">Ability의 <code>ActivateAbility</code>에서 Trace 시작, <code>EndAbility</code>에서 Trace 중단. Tick 자체를 Disable하고 필요 시 수동 호출 방식으로 전환. GameThread Tick 18.4ms → 11.4ms (38% 절감).</div>
+            <div class="problem-step-body">Ability의 몽타주가 어떤이유에서든 끊긴다면 어빌리티가 종료되도록 블루프린트 노드를 재배치</div>
           </div>
         </div>
       </div>
 
-      <div class="problem-item" onclick="toggleProblem(this)">
-        <div class="problem-header">
-          <span class="problem-num">03</span>
-          <span class="problem-title">PlayerStart 미설정 시 캐릭터가 맵 밖에 스폰</span>
-          <span class="tag tag-gray" style="font-size:10px;padding:3px 8px;">Gameplay</span>
-          <span class="problem-chevron">▾</span>
-        </div>
-        <div class="problem-body">
-          <div class="problem-step">
-            <span class="problem-step-label">현상</span>
-            <div class="problem-step-body">특정 맵 로드 후 캐릭터가 월드 원점(0,0,0) 또는 맵 밖에 스폰.</div>
-          </div>
-          <div class="problem-step">
-            <span class="problem-step-label">원인 분석</span>
-            <div class="problem-step-body">GameMode의 FindPlayerStart가 특정 조건에서 null 반환. PlayerStart 태그 필터링 로직에서 태그 미설정 시 폴백 처리 누락.</div>
-          </div>
-          <div class="problem-step">
-            <span class="problem-step-label">해결</span>
-            <div class="problem-step-body"><code>ChoosePlayerStart_Implementation</code> 오버라이드. 유효한 PlayerStart 없을 경우 Safety Spawn으로 폴백. 태그 검색 실패 시 로그 출력으로 조기 탐지.</div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </section>

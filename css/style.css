@@ -311,8 +311,13 @@ footer a { color: var(--accent); text-decoration: none; font-weight: 500; }
   .stat { border-right: none; border-bottom: 1px solid var(--border); }
   .footer-inner { flex-direction: column; text-align: center; }
 }
-  .code-img {
-    max-width: 600px;
+.code-img {
+  max-width: 600px;
+  width: 100%;
+  height: auto;
+} 
+  .WeaponSystemDiagram-img {
     width: 100%;
-    height: auto;
+    max-height: 600px;
+    object-fit: contain;
   }

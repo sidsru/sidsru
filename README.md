@@ -6,8 +6,8 @@
 
 | [오류의 땅, 제킨(Zekin)](https://github.com/sidsru/5th_6th-Team4-CH6-Project.git) | [Pettt Animals](https://github.com/NBcampUnrealTrack/5th_6th-Team3-CH4-Project.git) |
 | --- | --- |
-| <a href="https://github.com/sidsru/5th_6th-Team4-CH6-Project.git"><img src="https://via.placeholder.com/600x320?text=Team+Project+1" alt="오류의 땅, 제킨(Zekin) 썸네일" width="100%"></a> | <a href="https://github.com/NBcampUnrealTrack/5th_6th-Team3-CH4-Project.git"><img src="https://via.placeholder.com/600x320?text=Team+Project+2" alt="Pettt Animals 썸네일" width="100%"></a> |
-| 담당 역할:  | 담당 역할:  |
+| <a href="https://github.com/sidsru/5th_6th-Team4-CH6-Project.git"><img src="Img/ZekinThumbnail.png" alt="오류의 땅, 제킨(Zekin) 썸네일" width="100%"></a> | <a href="https://github.com/NBcampUnrealTrack/5th_6th-Team3-CH4-Project.git"><img src="Img/Pettt_AnimalsThumbnail.gif" alt="Pettt Animals 썸네일" width="100%"></a> |
+| 담당 역할: 캐릭터 플레이 로직 캐릭터의 콤보 공격, 캐릭터 기능 전반 | 담당 역할: 인게임 로직	InGame UI 제작, 승패 판정 로직 구현 |
 
 <br>
 
